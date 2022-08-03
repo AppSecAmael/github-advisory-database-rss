@@ -1,0 +1,577 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://azu.github.io/github-advisory-database-rss/composer.rss</id>
+    <title>Security Advisory for PHP packages hosted at packagist.org</title>
+    <updated>2022-08-03T08:56:17.744Z</updated>
+    <generator>github-advisory-database-rss</generator>
+    <link rel="alternate" href="https://github.com/advisories?query=type%3Areviewed+ecosystem%3Acomposer"/>
+    <subtitle>Security Advisory for PHP packages hosted at packagist.org on GitHub</subtitle>
+    <rights>github-advisory-database-rss</rights>
+    <category term="CRITICAL"/>
+    <category term="HIGH"/>
+    <category term="MODERATE"/>
+    <category term="LOW"/>
+    <entry>
+        <title type="html"><![CDATA[[microweber/microweber] Microweber Stored Cross-site Scripting before v1.2.20]]></title>
+        <id>https://github.com/advisories/GHSA-xg72-6c83-ghh4</id>
+        <link href="https://github.com/advisories/GHSA-xg72-6c83-ghh4"/>
+        <updated>2022-08-02T16:23:54.000Z</updated>
+        <content type="html"><![CDATA[<p>Microwerber prior to version 1.2.20 is vulnerable to stored Cross-site Scripting (XSS).</p>
+<h3 id="references">References</h3>
+<ul>
+<li><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-2495">https://nvd.nist.gov/vuln/detail/CVE-2022-2495</a></li>
+<li><a href="https://github.com/microweber/microweber/commit/d35e691e72d358430abc8e99f5ba9eb374423b9f">https://github.com/microweber/microweber/commit/d35e691e72d358430abc8e99f5ba9eb374423b9f</a></li>
+<li><a href="https://huntr.dev/bounties/00affb69-275d-4f4c-b419-437922bc7798">https://huntr.dev/bounties/00affb69-275d-4f4c-b419-437922bc7798</a></li>
+<li><a href="https://github.com/advisories/GHSA-xg72-6c83-ghh4">https://github.com/advisories/GHSA-xg72-6c83-ghh4</a></li>
+</ul>
+]]></content>
+        <author>
+            <name>GitHub</name>
+            <email>GitHub@noreply.github.com</email>
+            <uri>https://github.com/advisories/GHSA-xg72-6c83-ghh4</uri>
+        </author>
+        <category label="severity" term="MODERATE"/>
+        <published>2022-07-23T00:00:25.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[prestashop/prestashop] PrestaShop eval injection possible if shop vulnerable to SQL injection]]></title>
+        <id>https://github.com/advisories/GHSA-hrgx-p36p-89q4</id>
+        <link href="https://github.com/advisories/GHSA-hrgx-p36p-89q4"/>
+        <updated>2022-07-29T22:27:28.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="impact">Impact</h3>
+<p>Eval injection possible if the shop is vulnerable to an SQL injection.</p>
+<h3 id="patches">Patches</h3>
+<p>The problem is fixed in version 1.7.8.7</p>
+<h3 id="workarounds">Workarounds</h3>
+<p>Delete the MySQL Smarty cache feature by removing these lines in the file <code>config/smarty.config.inc.php</code> lines 43-46 (PrestaShop 1.7) or 40-43 (PrestaShop 1.6):</p>
+<pre><code class="language-php">if (Configuration::get('PS_SMARTY_CACHING_TYPE') == 'mysql') {
+    include _PS_CLASS_DIR_.'Smarty/SmartyCacheResourceMysql.php';
+    $smarty-&gt;caching_type = 'mysql';
+}
+</code></pre>
+<h3 id="references">References</h3>
+<ul>
+<li><a href="https://github.com/PrestaShop/PrestaShop/security/advisories/GHSA-hrgx-p36p-89q4">https://github.com/PrestaShop/PrestaShop/security/advisories/GHSA-hrgx-p36p-89q4</a></li>
+<li><a href="https://github.com/PrestaShop/PrestaShop/releases/tag/1.7.8.7">https://github.com/PrestaShop/PrestaShop/releases/tag/1.7.8.7</a></li>
+<li><a href="https://github.com/advisories/GHSA-hrgx-p36p-89q4">https://github.com/advisories/GHSA-hrgx-p36p-89q4</a></li>
+</ul>
+]]></content>
+        <author>
+            <name>GitHub</name>
+            <email>GitHub@noreply.github.com</email>
+            <uri>https://github.com/advisories/GHSA-hrgx-p36p-89q4</uri>
+        </author>
+        <category label="severity" term="CRITICAL"/>
+        <published>2022-07-29T22:27:27.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[mezzio/mezzio-swoole] mezzio-swoole Applications Using Diactoros Vulnerable to HTTP Host Header Attack]]></title>
+        <id>https://github.com/advisories/GHSA-c8rp-cgf4-937w</id>
+        <link href="https://github.com/advisories/GHSA-c8rp-cgf4-937w"/>
+        <updated>2022-07-29T22:26:11.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="impact">Impact</h3>
+<p>mezzio-swoole applications using Diactoros for their PSR-7 implementation, and which are either not behind a proxy, or can be accessed via untrusted proxies, can potentially have the host, protocol, and/or port of a <code>Laminas\Diactoros\Uri</code> instance associated with the incoming server request modified to reflect values from <code>X-Forwarded-*</code> headers. Such changes can potentially lead to XSS attacks (if a fully-qualified URL is used in links) and/or URL poisoning.</p>
+<h3 id="patches">Patches</h3>
+<p>3.7.0, and 4.3.0 and later.</p>
+<p>The patches present in these versions update the <code>SwooleServerRequestFactory</code> to filter out <code>X-Forwarded-*</code> headers when creating the initial request. They then by default pass that instance through a <code>Laminas\Diactoros\ServerRequestFilter\FilterUsingXForwardedHeaders</code> instance created from the <code>trustReservedSubnet()</code> constructor, ensuring that the request only honors the <code>X-Forwarded-*</code> headers for private reserved subnets.</p>
+<p>Users can define the <code>Laminas\Diactoros\ServerRequestFilter\FilterServerRequestInterface</code> service if they wish to provide a different implementation, or configure the <code>FilterUsingXForwardedHeaders</code> instance differently. When defined, that instance will be used to filter the generated request instance.</p>
+<h3 id="workarounds">Workarounds</h3>
+<p>Infrastructure or DevOps can place a trusted reverse proxy in front of the mezzio-swoole server.</p>
+<h3 id="references">References</h3>
+<ul>
+<li><a href="https://portswigger.net/web-security/host-header">HTTP Host Header Attacks</a></li>
+</ul>
+<h3 id="for-more-information">For more information</h3>
+<p>If you have any questions or comments about this advisory:</p>
+<ul>
+<li>Open an issue in <a href="https://github.com/mezzio/mezzio-swoole/">mezzio/mezzio-swoole</a></li>
+<li><a href="mailto:security@getlaminas.org">Email us</a></li>
+</ul>
+<h3 id="references-1">References</h3>
+<ul>
+<li><a href="https://github.com/mezzio/mezzio-swoole/security/advisories/GHSA-c8rp-cgf4-937w">https://github.com/mezzio/mezzio-swoole/security/advisories/GHSA-c8rp-cgf4-937w</a></li>
+<li><a href="https://github.com/advisories/GHSA-c8rp-cgf4-937w">https://github.com/advisories/GHSA-c8rp-cgf4-937w</a></li>
+</ul>
+]]></content>
+        <author>
+            <name>GitHub</name>
+            <email>GitHub@noreply.github.com</email>
+            <uri>https://github.com/advisories/GHSA-c8rp-cgf4-937w</uri>
+        </author>
+        <category label="severity" term="HIGH"/>
+        <published>2022-07-29T22:26:10.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[mezzio/mezzio-swoole] mezzio-swoole Applications Using Diactoros Vulnerable to HTTP Host Header Attack]]></title>
+        <id>https://github.com/advisories/GHSA-c8rp-cgf4-937w</id>
+        <link href="https://github.com/advisories/GHSA-c8rp-cgf4-937w"/>
+        <updated>2022-07-29T22:26:11.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="impact">Impact</h3>
+<p>mezzio-swoole applications using Diactoros for their PSR-7 implementation, and which are either not behind a proxy, or can be accessed via untrusted proxies, can potentially have the host, protocol, and/or port of a <code>Laminas\Diactoros\Uri</code> instance associated with the incoming server request modified to reflect values from <code>X-Forwarded-*</code> headers. Such changes can potentially lead to XSS attacks (if a fully-qualified URL is used in links) and/or URL poisoning.</p>
+<h3 id="patches">Patches</h3>
+<p>3.7.0, and 4.3.0 and later.</p>
+<p>The patches present in these versions update the <code>SwooleServerRequestFactory</code> to filter out <code>X-Forwarded-*</code> headers when creating the initial request. They then by default pass that instance through a <code>Laminas\Diactoros\ServerRequestFilter\FilterUsingXForwardedHeaders</code> instance created from the <code>trustReservedSubnet()</code> constructor, ensuring that the request only honors the <code>X-Forwarded-*</code> headers for private reserved subnets.</p>
+<p>Users can define the <code>Laminas\Diactoros\ServerRequestFilter\FilterServerRequestInterface</code> service if they wish to provide a different implementation, or configure the <code>FilterUsingXForwardedHeaders</code> instance differently. When defined, that instance will be used to filter the generated request instance.</p>
+<h3 id="workarounds">Workarounds</h3>
+<p>Infrastructure or DevOps can place a trusted reverse proxy in front of the mezzio-swoole server.</p>
+<h3 id="references">References</h3>
+<ul>
+<li><a href="https://portswigger.net/web-security/host-header">HTTP Host Header Attacks</a></li>
+</ul>
+<h3 id="for-more-information">For more information</h3>
+<p>If you have any questions or comments about this advisory:</p>
+<ul>
+<li>Open an issue in <a href="https://github.com/mezzio/mezzio-swoole/">mezzio/mezzio-swoole</a></li>
+<li><a href="mailto:security@getlaminas.org">Email us</a></li>
+</ul>
+<h3 id="references-1">References</h3>
+<ul>
+<li><a href="https://github.com/mezzio/mezzio-swoole/security/advisories/GHSA-c8rp-cgf4-937w">https://github.com/mezzio/mezzio-swoole/security/advisories/GHSA-c8rp-cgf4-937w</a></li>
+<li><a href="https://github.com/advisories/GHSA-c8rp-cgf4-937w">https://github.com/advisories/GHSA-c8rp-cgf4-937w</a></li>
+</ul>
+]]></content>
+        <author>
+            <name>GitHub</name>
+            <email>GitHub@noreply.github.com</email>
+            <uri>https://github.com/advisories/GHSA-c8rp-cgf4-937w</uri>
+        </author>
+        <category label="severity" term="HIGH"/>
+        <published>2022-07-29T22:26:10.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[microweber/microweber] Microweber before 1.2.21 vulnerable to reflected XSS]]></title>
+        <id>https://github.com/advisories/GHSA-cfcg-2qgr-v243</id>
+        <link href="https://github.com/advisories/GHSA-cfcg-2qgr-v243"/>
+        <updated>2022-07-27T22:11:06.000Z</updated>
+        <content type="html"><![CDATA[<p>Microweber prior to 1.2.21 is vulnerable to reflected cross-site scripting (XSS).</p>
+<h3 id="references">References</h3>
+<ul>
+<li><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-2470">https://nvd.nist.gov/vuln/detail/CVE-2022-2470</a></li>
+<li><a href="https://github.com/microweber/microweber/commit/d28655183800b833abb20ccd55e1628f16ff65e4">https://github.com/microweber/microweber/commit/d28655183800b833abb20ccd55e1628f16ff65e4</a></li>
+<li><a href="https://huntr.dev/bounties/3f1f679c-c243-431c-8ed0-e61543b9921b">https://huntr.dev/bounties/3f1f679c-c243-431c-8ed0-e61543b9921b</a></li>
+<li><a href="https://github.com/advisories/GHSA-cfcg-2qgr-v243">https://github.com/advisories/GHSA-cfcg-2qgr-v243</a></li>
+</ul>
+]]></content>
+        <author>
+            <name>GitHub</name>
+            <email>GitHub@noreply.github.com</email>
+            <uri>https://github.com/advisories/GHSA-cfcg-2qgr-v243</uri>
+        </author>
+        <category label="severity" term="MODERATE"/>
+        <published>2022-07-23T00:00:22.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[shopware/shopware] Shopware vulnerable to persistent XSS in customer module]]></title>
+        <id>https://github.com/advisories/GHSA-5834-xv5q-cgfw</id>
+        <link href="https://github.com/advisories/GHSA-5834-xv5q-cgfw"/>
+        <updated>2022-07-27T22:06:09.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="impact">Impact</h3>
+<p>Persistent XSS in customer module</p>
+<h3 id="patches">Patches</h3>
+<p>We recommend updating to the current version 5.7.14. You can get the update to 5.7.14 regularly via the Auto-Updater or directly via the download overview.</p>
+<p>For older versions you can use the Security Plugin:
+<a href="https://store.shopware.com/en/swag575294366635f/shopware-security-plugin.html">https://store.shopware.com/en/swag575294366635f/shopware-security-plugin.html</a></p>
+<h3 id="references">References</h3>
+<p><a href="https://docs.shopware.com/en/shopware-5-en/security-updates/security-update-07-2022">https://docs.shopware.com/en/shopware-5-en/security-updates/security-update-07-2022</a></p>
+<h3 id="references-1">References</h3>
+<ul>
+<li><a href="https://github.com/shopware/shopware/security/advisories/GHSA-5834-xv5q-cgfw">https://github.com/shopware/shopware/security/advisories/GHSA-5834-xv5q-cgfw</a></li>
+<li><a href="https://docs.shopware.com/en/shopware-5-en/security-updates/security-update-07-2022">https://docs.shopware.com/en/shopware-5-en/security-updates/security-update-07-2022</a></li>
+<li><a href="https://www.shopware.com/en/changelog-sw5/#5-7-14">https://www.shopware.com/en/changelog-sw5/#5-7-14</a></li>
+<li><a href="https://github.com/advisories/GHSA-5834-xv5q-cgfw">https://github.com/advisories/GHSA-5834-xv5q-cgfw</a></li>
+</ul>
+]]></content>
+        <author>
+            <name>GitHub</name>
+            <email>GitHub@noreply.github.com</email>
+            <uri>https://github.com/advisories/GHSA-5834-xv5q-cgfw</uri>
+        </author>
+        <category label="severity" term="MODERATE"/>
+        <published>2022-07-27T22:06:09.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[laminas/laminas-diactoros] Diactoros before 2.11.1 vulnerable to HTTP Host Header Attack]]></title>
+        <id>https://github.com/advisories/GHSA-8274-h5jp-97vr</id>
+        <link href="https://github.com/advisories/GHSA-8274-h5jp-97vr"/>
+        <updated>2022-07-27T22:05:18.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="impact">Impact</h3>
+<p>Applications that use Diactoros, and are either not behind a proxy, or can be accessed via untrusted proxies, can potentially have the host, protocol, and/or port of a <code>Laminas\Diactoros\Uri</code> instance associated with the incoming server request modified to reflect values from <code>X-Forwarded-*</code> headers. Such changes can potentially lead to XSS attacks (if a fully-qualified URL is used in links) and/or URL poisoning.</p>
+<h3 id="patches">Patches</h3>
+<p>Any version after 2.11.0.</p>
+<p>Starting in laminas/laminas-diactoros 2.11.1, we have added <code>Laminas\Diactoros\ServerRequestFilter\FilterServerRequestInterface</code>, which defines the single method <code>__invoke(Psr\Http\Message\ServerRequestInterface $request): Psr\Http\Message\ServerRequestInterface</code>. Filters implementing this interface allow modifying and returning a generated <code>ServerRequest</code>.</p>
+<p>The primary use case of the interface is to allow modifying the generated URI based on the presence of headers such as <code>X-Forwarded-Host</code>. When operating behind a reverse proxy, the <code>Host</code> header is often rewritten to the name of the node to which the request is being forwarded, and an <code>X-Forwarded-Host</code> header is generated with the original <code>Host</code> value to allow the server to determine the original host the request was intended for. (We have always examined the <code>X-Forwarded-Proto</code> header; as of Diactoros 2.11.1, we also examine the <code>X-Forwarded-Port</code> header.) To accommodate this use case, we created Laminas\Diactoros\ServerRequestFilter\FilterUsingXForwardedHeaders.</p>
+<p>Due to potential security issues, it is generally best to only accept these headers if you trust the reverse proxy that has initiated the request.
+(This value is found in <code>$_SERVER['REMOTE_ADDR']</code>, which is present as <code>$request-&gt;getServerParams()['REMOTE_ADDR']</code> within PSR-7 implementations.) <code>FilterUsingXForwardedHeaders</code> provides named constructors to allow you to trust these headers from any source (which has been the default behavior of Diactoros since the beginning), or to specify specific IP addresses or CIDR subnets to trust, along with which headers are trusted.</p>
+<p><code>Laminas\Diactoros\ServerRequestFactory::fromGlobals()</code> was updated to accept a <code>FilterServerRequestInterface</code> as an additional, optional argument. Since the <code>X-Forwarded-*</code> headers do have valid use cases, particularly in clustered environments using a load balancer, to prevent backwards compatibility breaks, if no filter is provided, we generate an instance via <code>FilterUsingXForwardedHeaders::trustReservedSubnets()</code>, which generates an instance marked to trust only proxies on private subnets.</p>
+<h3 id="workarounds">Workarounds</h3>
+<p>Infrastructure or DevOps can configure web servers to reject <code>X-Forwarded-*</code> headers at the web server level.</p>
+<p>Users of laminas/laminas-diactoros can make use of the <code>Laminas\Diactoros\RequestFilter\RequestFilterInterface</code> functionality in order to either (a) disable usage of the <code>X-Forwarded-*</code> headers entirely, (b) opt-in to it, or (c) opt-in to the usage for configured proxy servers.</p>
+<h3 id="references">References</h3>
+<ul>
+<li><a href="https://portswigger.net/web-security/host-header">HTTP Host Header Attacks</a></li>
+</ul>
+<h3 id="for-more-information">For more information</h3>
+<p>If you have any questions or comments about this advisory:</p>
+<ul>
+<li>Open an issue in <a href="https://github.com/laminas/laminas-diactoros/">laminas/laminas-diactoros</a></li>
+<li><a href="mailto:security@getlaminas.org">Email us</a></li>
+</ul>
+<h3 id="references-1">References</h3>
+<ul>
+<li><a href="https://github.com/laminas/laminas-diactoros/security/advisories/GHSA-8274-h5jp-97vr">https://github.com/laminas/laminas-diactoros/security/advisories/GHSA-8274-h5jp-97vr</a></li>
+<li><a href="https://github.com/laminas/laminas-diactoros/commit/25b11d422c2e5dad868f68619888763b30f91e2d">https://github.com/laminas/laminas-diactoros/commit/25b11d422c2e5dad868f68619888763b30f91e2d</a></li>
+<li><a href="https://github.com/laminas/laminas-diactoros/releases/tag/2.11.1">https://github.com/laminas/laminas-diactoros/releases/tag/2.11.1</a></li>
+<li><a href="https://github.com/advisories/GHSA-8274-h5jp-97vr">https://github.com/advisories/GHSA-8274-h5jp-97vr</a></li>
+</ul>
+]]></content>
+        <author>
+            <name>GitHub</name>
+            <email>GitHub@noreply.github.com</email>
+            <uri>https://github.com/advisories/GHSA-8274-h5jp-97vr</uri>
+        </author>
+        <category label="severity" term="HIGH"/>
+        <published>2022-07-27T22:05:18.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[islandora/islandora] Islandora 2.0 before 2.4.1 could allow any user to upload content into a repository]]></title>
+        <id>https://github.com/advisories/GHSA-m58q-qq5h-mgqq</id>
+        <link href="https://github.com/advisories/GHSA-m58q-qq5h-mgqq"/>
+        <updated>2022-07-21T22:36:21.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="impact">Impact</h3>
+<p>This vulnerability would allow any user, regardless of permissions, to upload content into a repository. This affects installations of Islandora core 2.0 or greater.</p>
+<h3 id="patches">Patches</h3>
+<p>Upgrade immediately to the <a href="https://github.com/Islandora/islandora/releases/tag/2.4.1">latest release</a> of Islandora.</p>
+<h3 id="workarounds">Workarounds</h3>
+<p>In lieu of an upgrade the <a href="https://github.com/Islandora/islandora_ghsa_route_fix">following module</a> can be leveraged that will resolve the issue until such a time an upgrade can take place.</p>
+<h3 id="for-more-information">For more information</h3>
+<p>If you have any questions or comments about this advisory:</p>
+<ul>
+<li>Open an issue in <a href="https://github.com/Islandora/islandora">Islandora</a></li>
+<li>Contact <a href="mailto:community@islandora.ca">community@islandora.ca</a>.</li>
+</ul>
+<h3 id="references">References</h3>
+<ul>
+<li><a href="https://github.com/Islandora/islandora/security/advisories/GHSA-m58q-qq5h-mgqq">https://github.com/Islandora/islandora/security/advisories/GHSA-m58q-qq5h-mgqq</a></li>
+<li><a href="https://github.com/Islandora/islandora/commit/573d6878edf057987f1e41e5068de0074573e4c7">https://github.com/Islandora/islandora/commit/573d6878edf057987f1e41e5068de0074573e4c7</a></li>
+<li><a href="https://github.com/Islandora/islandora/releases/tag/2.4.1">https://github.com/Islandora/islandora/releases/tag/2.4.1</a></li>
+<li><a href="https://github.com/advisories/GHSA-m58q-qq5h-mgqq">https://github.com/advisories/GHSA-m58q-qq5h-mgqq</a></li>
+</ul>
+]]></content>
+        <author>
+            <name>GitHub</name>
+            <email>GitHub@noreply.github.com</email>
+            <uri>https://github.com/advisories/GHSA-m58q-qq5h-mgqq</uri>
+        </author>
+        <category label="severity" term="CRITICAL"/>
+        <published>2022-07-21T22:36:20.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[woocommerce/woocommerce] WooCommerce WordPress plugin before 6.6.0 vulnerable to stored HTML injection]]></title>
+        <id>https://github.com/advisories/GHSA-jwvf-28fg-g4xg</id>
+        <link href="https://github.com/advisories/GHSA-jwvf-28fg-g4xg"/>
+        <updated>2022-07-21T21:40:21.000Z</updated>
+        <content type="html"><![CDATA[<p>The WooCommerce WordPress plugin before 6.6.0 is vulnerable to stored HTML injection due to lack of escaping and sanitizing in the payment gateway titles</p>
+<h3 id="references">References</h3>
+<ul>
+<li><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-2099">https://nvd.nist.gov/vuln/detail/CVE-2022-2099</a></li>
+<li><a href="https://wpscan.com/vulnerability/0316e5f3-3302-40e3-8ff4-be3423a3be7b">https://wpscan.com/vulnerability/0316e5f3-3302-40e3-8ff4-be3423a3be7b</a></li>
+<li><a href="https://github.com/advisories/GHSA-jwvf-28fg-g4xg">https://github.com/advisories/GHSA-jwvf-28fg-g4xg</a></li>
+</ul>
+]]></content>
+        <author>
+            <name>GitHub</name>
+            <email>GitHub@noreply.github.com</email>
+            <uri>https://github.com/advisories/GHSA-jwvf-28fg-g4xg</uri>
+        </author>
+        <category label="severity" term="MODERATE"/>
+        <published>2022-07-18T00:00:33.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[dompdf/dompdf] Dompdf before v2.0.0 vulnerable to chroot check bypass]]></title>
+        <id>https://github.com/advisories/GHSA-5qj8-6xxj-hp9h</id>
+        <link href="https://github.com/advisories/GHSA-5qj8-6xxj-hp9h"/>
+        <updated>2022-07-25T18:25:18.000Z</updated>
+        <content type="html"><![CDATA[<p>Dompdf prior to version 2.0.0 is vulnerable to a chroot check bypass, which could cause disclosure of png and jpeg files.</p>
+<h3 id="references">References</h3>
+<ul>
+<li><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-2400">https://nvd.nist.gov/vuln/detail/CVE-2022-2400</a></li>
+<li><a href="https://github.com/dompdf/dompdf/commit/99aeec1efec9213e87098d42eb09439e7ee0bb6a">https://github.com/dompdf/dompdf/commit/99aeec1efec9213e87098d42eb09439e7ee0bb6a</a></li>
+<li><a href="https://huntr.dev/bounties/a6da5e5e-86be-499a-a3c3-2950f749202a">https://huntr.dev/bounties/a6da5e5e-86be-499a-a3c3-2950f749202a</a></li>
+<li><a href="https://github.com/advisories/GHSA-5qj8-6xxj-hp9h">https://github.com/advisories/GHSA-5qj8-6xxj-hp9h</a></li>
+</ul>
+]]></content>
+        <author>
+            <name>GitHub</name>
+            <email>GitHub@noreply.github.com</email>
+            <uri>https://github.com/advisories/GHSA-5qj8-6xxj-hp9h</uri>
+        </author>
+        <category label="severity" term="MODERATE"/>
+        <published>2022-07-19T00:00:26.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[snipe/snipe-it] Snipe-IT 6.0.2 vulnerable to Cross-site Scripting]]></title>
+        <id>https://github.com/advisories/GHSA-xwqx-x38c-cw95</id>
+        <link href="https://github.com/advisories/GHSA-xwqx-x38c-cw95"/>
+        <updated>2022-07-21T21:39:07.000Z</updated>
+        <content type="html"><![CDATA[<p>An arbitrary file upload vulnerability in the Select User function under the People Menu component of Snipe-IT v6.0.2 allows attackers to execute arbitrary code via a crafted file.</p>
+<h3 id="references">References</h3>
+<ul>
+<li><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-32061">https://nvd.nist.gov/vuln/detail/CVE-2022-32061</a></li>
+<li><a href="https://grimthereaperteam.medium.com/snipe-it-version-v6-0-2-file-upload-cross-site-scripting-c02e46fa72ab">https://grimthereaperteam.medium.com/snipe-it-version-v6-0-2-file-upload-cross-site-scripting-c02e46fa72ab</a></li>
+<li><a href="https://github.com/advisories/GHSA-xwqx-x38c-cw95">https://github.com/advisories/GHSA-xwqx-x38c-cw95</a></li>
+</ul>
+]]></content>
+        <author>
+            <name>GitHub</name>
+            <email>GitHub@noreply.github.com</email>
+            <uri>https://github.com/advisories/GHSA-xwqx-x38c-cw95</uri>
+        </author>
+        <category label="severity" term="MODERATE"/>
+        <published>2022-07-08T00:00:42.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[snipe/snipe-it] Snipe-IT 6.0.2 vulnerable to Cross-site Scripting via arbitrary file upload in Update Branding Settings]]></title>
+        <id>https://github.com/advisories/GHSA-w82x-xjjr-cjr5</id>
+        <link href="https://github.com/advisories/GHSA-w82x-xjjr-cjr5"/>
+        <updated>2022-07-21T20:58:43.000Z</updated>
+        <content type="html"><![CDATA[<p>An arbitrary file upload vulnerability in the Update Branding Settings component of Snipe-IT v6.0.2 allows attackers to execute arbitrary code via a crafted file.</p>
+<h3 id="references">References</h3>
+<ul>
+<li><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-32060">https://nvd.nist.gov/vuln/detail/CVE-2022-32060</a></li>
+<li><a href="https://grimthereaperteam.medium.com/snipe-it-version-v6-0-2-file-upload-cross-site-scripting-b15becc1a5ea">https://grimthereaperteam.medium.com/snipe-it-version-v6-0-2-file-upload-cross-site-scripting-b15becc1a5ea</a></li>
+<li><a href="https://github.com/advisories/GHSA-w82x-xjjr-cjr5">https://github.com/advisories/GHSA-w82x-xjjr-cjr5</a></li>
+</ul>
+]]></content>
+        <author>
+            <name>GitHub</name>
+            <email>GitHub@noreply.github.com</email>
+            <uri>https://github.com/advisories/GHSA-w82x-xjjr-cjr5</uri>
+        </author>
+        <category label="severity" term="MODERATE"/>
+        <published>2022-07-08T00:00:42.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[idno/known] Known v1.3.1 contains Insecure Direct Object Reference]]></title>
+        <id>https://github.com/advisories/GHSA-4v4p-87m3-5423</id>
+        <link href="https://github.com/advisories/GHSA-4v4p-87m3-5423"/>
+        <updated>2022-07-20T01:32:07.000Z</updated>
+        <content type="html"><![CDATA[<p>Known v1.3.1 was discovered to contain an Insecure Direct Object Reference (IDOR).</p>
+<p>The researcher report indicates that versions 1.3.1 and prior are vulnerable. Version 1.2.2 is the last version tagged on GitHub and in Packagist, and development related to the 1.3.x branch is currently on the <code>dev</code> branch of the idno/known repository.</p>
+<h3 id="references">References</h3>
+<ul>
+<li><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-30852">https://nvd.nist.gov/vuln/detail/CVE-2022-30852</a></li>
+<li><a href="https://blog.jitendrapatro.me/multiple-vulnerabilities-in-idno-known-php-cms-software/">https://blog.jitendrapatro.me/multiple-vulnerabilities-in-idno-known-php-cms-software/</a></li>
+<li><a href="https://github.com/idno/known">https://github.com/idno/known</a></li>
+<li><a href="https://withknown.com/">https://withknown.com/</a></li>
+<li><a href="https://github.com/advisories/GHSA-4v4p-87m3-5423">https://github.com/advisories/GHSA-4v4p-87m3-5423</a></li>
+</ul>
+]]></content>
+        <author>
+            <name>GitHub</name>
+            <email>GitHub@noreply.github.com</email>
+            <uri>https://github.com/advisories/GHSA-4v4p-87m3-5423</uri>
+        </author>
+        <category label="severity" term="MODERATE"/>
+        <published>2022-07-09T00:00:26.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[idno/known] Known v1.3.1 Cross-site Scripting]]></title>
+        <id>https://github.com/advisories/GHSA-g688-7j3c-h9f3</id>
+        <link href="https://github.com/advisories/GHSA-g688-7j3c-h9f3"/>
+        <updated>2022-07-20T00:02:47.000Z</updated>
+        <content type="html"><![CDATA[<p>A cross-site scripting (XSS) vulnerability in Known v1.3.1 allows authenticated attackers to execute arbitrary web scripts or HTML via a crafted payload injected into the Your Name text field.</p>
+<p>The researcher report indicates that versions 1.3.1 and prior are vulnerable. Version 1.2.2 is the last version tagged on GitHub and in Packagist, and development related to the 1.3.x branch is currently on the <code>dev</code> branch of the idno/known repository.</p>
+<h3 id="references">References</h3>
+<ul>
+<li><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-31290">https://nvd.nist.gov/vuln/detail/CVE-2022-31290</a></li>
+<li><a href="https://blog.jitendrapatro.me/multiple-vulnerabilities-in-idno-known-php-cms-software/">https://blog.jitendrapatro.me/multiple-vulnerabilities-in-idno-known-php-cms-software/</a></li>
+<li><a href="https://github.com/idno/known">https://github.com/idno/known</a></li>
+<li><a href="https://withknown.com/">https://withknown.com/</a></li>
+<li><a href="http://docs.withknown.com/en/latest/install/index.html">http://docs.withknown.com/en/latest/install/index.html</a></li>
+<li><a href="https://github.com/advisories/GHSA-g688-7j3c-h9f3">https://github.com/advisories/GHSA-g688-7j3c-h9f3</a></li>
+</ul>
+]]></content>
+        <author>
+            <name>GitHub</name>
+            <email>GitHub@noreply.github.com</email>
+            <uri>https://github.com/advisories/GHSA-g688-7j3c-h9f3</uri>
+        </author>
+        <category label="severity" term="MODERATE"/>
+        <published>2022-07-09T00:00:26.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[microweber/microweber] Microweber before 1.2.21 allows attacker to bypass IP detection to brute-force password]]></title>
+        <id>https://github.com/advisories/GHSA-9wqr-9787-p4rf</id>
+        <link href="https://github.com/advisories/GHSA-9wqr-9787-p4rf"/>
+        <updated>2022-07-19T18:31:22.000Z</updated>
+        <content type="html"><![CDATA[<p>In the login API, an IP address will by default be blocked when the user tries to login incorrectly more than 5 times. However, a bypass to this mechanism is possible by abusing a X-Forwarded-For header to bypass IP detection and perform a password brute-force. A patch for this issue is available in Microweber version 1.2.21.</p>
+<h3 id="references">References</h3>
+<ul>
+<li><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-2368">https://nvd.nist.gov/vuln/detail/CVE-2022-2368</a></li>
+<li><a href="https://github.com/microweber/microweber/commit/53c000ccd5602536e28b15d9630eb8261b04a302">https://github.com/microweber/microweber/commit/53c000ccd5602536e28b15d9630eb8261b04a302</a></li>
+<li><a href="https://huntr.dev/bounties/a9595eda-a5e0-4717-8d64-b445ef83f452">https://huntr.dev/bounties/a9595eda-a5e0-4717-8d64-b445ef83f452</a></li>
+<li><a href="https://github.com/advisories/GHSA-9wqr-9787-p4rf">https://github.com/advisories/GHSA-9wqr-9787-p4rf</a></li>
+</ul>
+]]></content>
+        <author>
+            <name>GitHub</name>
+            <email>GitHub@noreply.github.com</email>
+            <uri>https://github.com/advisories/GHSA-9wqr-9787-p4rf</uri>
+        </author>
+        <category label="severity" term="MODERATE"/>
+        <published>2022-07-12T00:00:57.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[wintercms/winter] Bypass of CMS Safe Mode Security Feature]]></title>
+        <id>https://github.com/advisories/GHSA-q37h-jhf3-85cj</id>
+        <link href="https://github.com/advisories/GHSA-q37h-jhf3-85cj"/>
+        <updated>2022-07-16T19:40:18.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="impact">Impact</h3>
+<p>Authenticated users with permissions to create or modify theme template objects through the backend "CMS" editor can exploit this vulnerability to bypass the <code>cms.enableSafeMode</code> security feature if enabled (disables modification of PHP code through the web interface when enabled).</p>
+<p>This is only an issue for Winter CMS instances that rely on the Safe Mode security feature to prevent privileged users from modifying the PHP code of CMS theme template objects through the web interface.</p>
+<p>CVSS v3.1 Vector: <a href="https://nvd.nist.gov/vuln-metrics/cvss/v3-calculator?vector=AV:N/AC:L/PR:H/UI:N/S:U/C:H/I:H/A:H/E:P/RL:O/RC:C&amp;version=3.1">AV:N/AC:L/PR:H/UI:N/S:U/C:H/I:H/A:H/E:P/RL:O/RC:C</a></p>
+<h3 id="patches">Patches</h3>
+<p>Issue has been fixed in v1.0.475, v1.1.9, &amp; v1.2. </p>
+<h3 id="workarounds">Workarounds</h3>
+<p>Apply <a href="https://github.com/wintercms/storm/commit/03eb5ce3f2a271670574802b914f7bcaf07663c1">https://github.com/wintercms/storm/commit/03eb5ce3f2a271670574802b914f7bcaf07663c1</a> manually if unable to upgrade to v1.0.475, v1.1.9, or v1.2.0.</p>
+<h3 id="references">References</h3>
+<p>See <a href="https://github.com/octobercms/october/security/advisories/GHSA-79jw-2f46-wv22/">https://github.com/octobercms/october/security/advisories/GHSA-79jw-2f46-wv22/</a>.</p>
+<p>Credit to <a href="https://github.com/cydave">David Miller</a> for reporting the issue.</p>
+<h3 id="for-more-information">For more information</h3>
+<p>If you have any questions or comments about this advisory:</p>
+<ul>
+<li>Email us at <a href="mailto:hello@wintercms.com">hello@wintercms.com</a></li>
+</ul>
+<h3 id="references-1">References</h3>
+<ul>
+<li><a href="https://github.com/wintercms/winter/security/advisories/GHSA-q37h-jhf3-85cj">https://github.com/wintercms/winter/security/advisories/GHSA-q37h-jhf3-85cj</a></li>
+<li><a href="https://github.com/advisories/GHSA-q37h-jhf3-85cj">https://github.com/advisories/GHSA-q37h-jhf3-85cj</a></li>
+</ul>
+]]></content>
+        <author>
+            <name>GitHub</name>
+            <email>GitHub@noreply.github.com</email>
+            <uri>https://github.com/advisories/GHSA-q37h-jhf3-85cj</uri>
+        </author>
+        <category label="severity" term="MODERATE"/>
+        <published>2022-07-15T21:37:28.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[wintercms/winter] Bypass of CMS Safe Mode Security Feature]]></title>
+        <id>https://github.com/advisories/GHSA-q37h-jhf3-85cj</id>
+        <link href="https://github.com/advisories/GHSA-q37h-jhf3-85cj"/>
+        <updated>2022-07-16T19:40:18.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="impact">Impact</h3>
+<p>Authenticated users with permissions to create or modify theme template objects through the backend "CMS" editor can exploit this vulnerability to bypass the <code>cms.enableSafeMode</code> security feature if enabled (disables modification of PHP code through the web interface when enabled).</p>
+<p>This is only an issue for Winter CMS instances that rely on the Safe Mode security feature to prevent privileged users from modifying the PHP code of CMS theme template objects through the web interface.</p>
+<p>CVSS v3.1 Vector: <a href="https://nvd.nist.gov/vuln-metrics/cvss/v3-calculator?vector=AV:N/AC:L/PR:H/UI:N/S:U/C:H/I:H/A:H/E:P/RL:O/RC:C&amp;version=3.1">AV:N/AC:L/PR:H/UI:N/S:U/C:H/I:H/A:H/E:P/RL:O/RC:C</a></p>
+<h3 id="patches">Patches</h3>
+<p>Issue has been fixed in v1.0.475, v1.1.9, &amp; v1.2. </p>
+<h3 id="workarounds">Workarounds</h3>
+<p>Apply <a href="https://github.com/wintercms/storm/commit/03eb5ce3f2a271670574802b914f7bcaf07663c1">https://github.com/wintercms/storm/commit/03eb5ce3f2a271670574802b914f7bcaf07663c1</a> manually if unable to upgrade to v1.0.475, v1.1.9, or v1.2.0.</p>
+<h3 id="references">References</h3>
+<p>See <a href="https://github.com/octobercms/october/security/advisories/GHSA-79jw-2f46-wv22/">https://github.com/octobercms/october/security/advisories/GHSA-79jw-2f46-wv22/</a>.</p>
+<p>Credit to <a href="https://github.com/cydave">David Miller</a> for reporting the issue.</p>
+<h3 id="for-more-information">For more information</h3>
+<p>If you have any questions or comments about this advisory:</p>
+<ul>
+<li>Email us at <a href="mailto:hello@wintercms.com">hello@wintercms.com</a></li>
+</ul>
+<h3 id="references-1">References</h3>
+<ul>
+<li><a href="https://github.com/wintercms/winter/security/advisories/GHSA-q37h-jhf3-85cj">https://github.com/wintercms/winter/security/advisories/GHSA-q37h-jhf3-85cj</a></li>
+<li><a href="https://github.com/advisories/GHSA-q37h-jhf3-85cj">https://github.com/advisories/GHSA-q37h-jhf3-85cj</a></li>
+</ul>
+]]></content>
+        <author>
+            <name>GitHub</name>
+            <email>GitHub@noreply.github.com</email>
+            <uri>https://github.com/advisories/GHSA-q37h-jhf3-85cj</uri>
+        </author>
+        <category label="severity" term="MODERATE"/>
+        <published>2022-07-15T21:37:28.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[packbackbooks/lti-1-3-php-library] LTI 1.3 Tool Library's Nonce Claim Value not validated against nonce value sent in Authentication Request before v5.0]]></title>
+        <id>https://github.com/advisories/GHSA-5p73-qg2v-383h</id>
+        <link href="https://github.com/advisories/GHSA-5p73-qg2v-383h"/>
+        <updated>2022-07-25T19:24:44.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="impact">Impact</h3>
+<p>Nonce Claim Value was not being validated against the nonce value sent in the Authentication Request.</p>
+<h3 id="patches">Patches</h3>
+<p>Users should upgrade to version 5.0 immediately</p>
+<h3 id="workarounds">Workarounds</h3>
+<p>None.</p>
+<h3 id="references">References</h3>
+<ul>
+<li><a href="https://github.com/packbackbooks/lti-1-3-php-library/security/advisories/GHSA-5p73-qg2v-383h">https://github.com/packbackbooks/lti-1-3-php-library/security/advisories/GHSA-5p73-qg2v-383h</a></li>
+<li><a href="https://openid.net/specs/openid-connect-core-1_0.html#AuthRequest">https://openid.net/specs/openid-connect-core-1_0.html#AuthRequest</a></li>
+<li><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-31158">https://nvd.nist.gov/vuln/detail/CVE-2022-31158</a></li>
+<li><a href="https://github.com/advisories/GHSA-5p73-qg2v-383h">https://github.com/advisories/GHSA-5p73-qg2v-383h</a></li>
+</ul>
+]]></content>
+        <author>
+            <name>GitHub</name>
+            <email>GitHub@noreply.github.com</email>
+            <uri>https://github.com/advisories/GHSA-5p73-qg2v-383h</uri>
+        </author>
+        <category label="severity" term="HIGH"/>
+        <published>2022-07-15T20:55:50.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[packbackbooks/lti-1-3-php-library] LTI 1.3 Tool Library's function used to generate random nonces not sufficiently cryptographically complex before v5.0]]></title>
+        <id>https://github.com/advisories/GHSA-768m-5w34-2xf5</id>
+        <link href="https://github.com/advisories/GHSA-768m-5w34-2xf5"/>
+        <updated>2022-07-25T19:25:09.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="impact">Impact</h3>
+<p>The function used to generate random nonces was not sufficiently cryptographically complex. As a result values may be predictable and tokens may be forgable.</p>
+<h3 id="patches">Patches</h3>
+<p>Users should upgrade to version 5.0 immediately</p>
+<h3 id="workarounds">Workarounds</h3>
+<p>None.</p>
+<h3 id="references">References</h3>
+<ul>
+<li><a href="https://github.com/packbackbooks/lti-1-3-php-library/security/advisories/GHSA-768m-5w34-2xf5">https://github.com/packbackbooks/lti-1-3-php-library/security/advisories/GHSA-768m-5w34-2xf5</a></li>
+<li><a href="https://github.com/packbackbooks/lti-1-3-php-library/commit/de19e8a0b28cdc7750fa3ca98471eeed26ba3e57">https://github.com/packbackbooks/lti-1-3-php-library/commit/de19e8a0b28cdc7750fa3ca98471eeed26ba3e57</a></li>
+<li><a href="https://openid.net/specs/openid-connect-core-1_0.html#IDToken">https://openid.net/specs/openid-connect-core-1_0.html#IDToken</a></li>
+<li><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-31157">https://nvd.nist.gov/vuln/detail/CVE-2022-31157</a></li>
+<li><a href="https://github.com/advisories/GHSA-768m-5w34-2xf5">https://github.com/advisories/GHSA-768m-5w34-2xf5</a></li>
+</ul>
+]]></content>
+        <author>
+            <name>GitHub</name>
+            <email>GitHub@noreply.github.com</email>
+            <uri>https://github.com/advisories/GHSA-768m-5w34-2xf5</uri>
+        </author>
+        <category label="severity" term="HIGH"/>
+        <published>2022-07-15T20:55:46.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[oro/commerce] OroCommerce vulnerable to XSS when adding class name to Selector Manager on pages that use GrapeJS editor]]></title>
+        <id>https://github.com/advisories/GHSA-6f85-3f8q-qc94</id>
+        <link href="https://github.com/advisories/GHSA-6f85-3f8q-qc94"/>
+        <updated>2022-07-15T19:25:07.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="impact">Impact</h1>
+<p>Due to insufficient class name validation in GrapeJS library it's possible to add executable JS code in class name through Selector Manager</p>
+<h1 id="relates-to">Relates to</h1>
+<ul>
+<li><a href="https://github.com/artf/grapesjs/issues/4411">https://github.com/artf/grapesjs/issues/4411</a></li>
+</ul>
+<h1 id="patch">Patch</h1>
+<p>Update GrapeJS dependency to &gt;=<a href="https://github.com/artf/grapesjs/releases/tag/v0.19.5">v0.19.5</a></p>
+<h3 id="references">References</h3>
+<ul>
+<li><a href="https://github.com/oroinc/orocommerce/security/advisories/GHSA-6f85-3f8q-qc94">https://github.com/oroinc/orocommerce/security/advisories/GHSA-6f85-3f8q-qc94</a></li>
+<li><a href="https://github.com/artf/grapesjs/issues/4411">https://github.com/artf/grapesjs/issues/4411</a></li>
+<li><a href="https://github.com/advisories/GHSA-6f85-3f8q-qc94">https://github.com/advisories/GHSA-6f85-3f8q-qc94</a></li>
+</ul>
+]]></content>
+        <author>
+            <name>GitHub</name>
+            <email>GitHub@noreply.github.com</email>
+            <uri>https://github.com/advisories/GHSA-6f85-3f8q-qc94</uri>
+        </author>
+        <category label="severity" term="MODERATE"/>
+        <published>2022-07-15T19:25:06.000Z</published>
+    </entry>
+</feed>

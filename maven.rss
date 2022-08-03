@@ -1,0 +1,583 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://azu.github.io/github-advisory-database-rss/maven.rss</id>
+    <title>Security Advisory for Java artifacts hosted at the Maven central repository</title>
+    <updated>2022-08-03T08:56:18.646Z</updated>
+    <generator>github-advisory-database-rss</generator>
+    <link rel="alternate" href="https://github.com/advisories?query=type%3Areviewed+ecosystem%3Amaven"/>
+    <subtitle>Security Advisory for Java artifacts hosted at the Maven central repository on GitHub</subtitle>
+    <rights>github-advisory-database-rss</rights>
+    <category term="CRITICAL"/>
+    <category term="HIGH"/>
+    <category term="MODERATE"/>
+    <category term="LOW"/>
+    <entry>
+        <title type="html"><![CDATA[[co.fs2:fs2-io] fs2-io skips mTLS client verification]]></title>
+        <id>https://github.com/advisories/GHSA-2cpx-6pqp-wf35</id>
+        <link href="https://github.com/advisories/GHSA-2cpx-6pqp-wf35"/>
+        <updated>2022-07-29T22:24:11.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="impact">Impact</h3>
+<p>When establishing a server-mode <code>TLSSocket</code> using <code>fs2-io</code> on Node.js, the parameter <code>requestCert = true</code> is ignored, peer certificate verification is skipped, and the connection proceeds.</p>
+<p>The vulnerability is limited to:</p>
+<ol>
+<li><code>fs2-io</code> running on Node.js. The JVM TLS implementation is completely independent.</li>
+<li><code>TLSSocket</code>s in server-mode. Client-mode <code>TLSSocket</code>s are implemented via a different API.</li>
+<li>mTLS as enabled via <code>requestCert = true</code> in <code>TLSParameters</code>. The default setting is <code>false</code> for server-mode <code>TLSSocket</code>s.</li>
+</ol>
+<p>It was introduced with the initial Node.js implementation of fs2-io in v3.1.0.</p>
+<h3 id="patches">Patches</h3>
+<p>A patch is released in v3.2.11. The <code>requestCert = true</code> parameter is respected and the peer certificate is verified. If verification fails, a <code>SSLException</code> is raised.</p>
+<h3 id="workarounds">Workarounds</h3>
+<p>If using an unpatched version on Node.js, do not use a server-mode <code>TLSSocket</code> with <code>requestCert = true</code> to establish a mTLS connection.</p>
+<h3 id="references">References</h3>
+<ul>
+<li><a href="https://github.com/nodejs/node/issues/43994">https://github.com/nodejs/node/issues/43994</a></li>
+<li><a href="https://www.cloudflare.com/learning/access-management/what-is-mutual-tls/">https://www.cloudflare.com/learning/access-management/what-is-mutual-tls/</a></li>
+</ul>
+<h3 id="for-more-information">For more information</h3>
+<p>If you have any questions or comments about this advisory:</p>
+<ul>
+<li><a href="https://github.com/typelevel/fs2/issues/new/choose">Open an issue.</a></li>
+<li>Contact the <a href="https://github.com/typelevel/.github/blob/main/SECURITY.md">Typelevel Security Team</a>.</li>
+</ul>
+<h3 id="references-1">References</h3>
+<ul>
+<li><a href="https://github.com/typelevel/fs2/security/advisories/GHSA-2cpx-6pqp-wf35">https://github.com/typelevel/fs2/security/advisories/GHSA-2cpx-6pqp-wf35</a></li>
+<li><a href="https://github.com/nodejs/node/issues/43994">https://github.com/nodejs/node/issues/43994</a></li>
+<li><a href="https://github.com/typelevel/fs2/commit/19ce392e8093d9571387dbd78e159e655a85aeea">https://github.com/typelevel/fs2/commit/19ce392e8093d9571387dbd78e159e655a85aeea</a></li>
+<li><a href="https://github.com/typelevel/fs2/releases/tag/v3.2.11">https://github.com/typelevel/fs2/releases/tag/v3.2.11</a></li>
+<li><a href="https://github.com/advisories/GHSA-2cpx-6pqp-wf35">https://github.com/advisories/GHSA-2cpx-6pqp-wf35</a></li>
+</ul>
+]]></content>
+        <author>
+            <name>GitHub</name>
+            <email>GitHub@noreply.github.com</email>
+            <uri>https://github.com/advisories/GHSA-2cpx-6pqp-wf35</uri>
+        </author>
+        <category label="severity" term="MODERATE"/>
+        <published>2022-07-29T22:24:10.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[org.apache.geronimo.plugins:console] Apache Geronimo Application Server CSRF vulnerabilities]]></title>
+        <id>https://github.com/advisories/GHSA-678x-xfp4-r92r</id>
+        <link href="https://github.com/advisories/GHSA-678x-xfp4-r92r"/>
+        <updated>2022-07-29T19:50:17.000Z</updated>
+        <content type="html"><![CDATA[<p>Multiple cross-site request forgery (CSRF) vulnerabilities in the web administration console in Apache Geronimo Application Server 2.1 through 2.1.3 allow remote attackers to hijack the authentication of administrators for requests that (1) change the web administration password, (2) upload applications, and perform unspecified other administrative actions, as demonstrated by (3) a Shutdown request to console/portal//Server/Shutdown.</p>
+<h3 id="references">References</h3>
+<ul>
+<li><a href="https://nvd.nist.gov/vuln/detail/CVE-2009-0039">https://nvd.nist.gov/vuln/detail/CVE-2009-0039</a></li>
+<li><a href="http://dsecrg.com/pages/vul/show.php?id=120">http://dsecrg.com/pages/vul/show.php?id=120</a></li>
+<li><a href="http://geronimo.apache.org/21x-security-report.html#2.1.xSecurityReport-214">http://geronimo.apache.org/21x-security-report.html#2.1.xSecurityReport-214</a></li>
+<li><a href="http://issues.apache.org/jira/browse/GERONIMO-4597">http://issues.apache.org/jira/browse/GERONIMO-4597</a></li>
+<li><a href="http://secunia.com/advisories/34715">http://secunia.com/advisories/34715</a></li>
+<li><a href="http://www.securityfocus.com/archive/1/502735/100/0/threaded">http://www.securityfocus.com/archive/1/502735/100/0/threaded</a></li>
+<li><a href="http://www.securityfocus.com/bid/34562">http://www.securityfocus.com/bid/34562</a></li>
+<li><a href="http://www.vupen.com/english/advisories/2009/1089">http://www.vupen.com/english/advisories/2009/1089</a></li>
+<li><a href="https://github.com/advisories/GHSA-678x-xfp4-r92r">https://github.com/advisories/GHSA-678x-xfp4-r92r</a></li>
+</ul>
+]]></content>
+        <author>
+            <name>GitHub</name>
+            <email>GitHub@noreply.github.com</email>
+            <uri>https://github.com/advisories/GHSA-678x-xfp4-r92r</uri>
+        </author>
+        <category label="severity" term="MODERATE"/>
+        <published>2022-05-02T03:12:31.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[geronimo:geronimo-console-standard] Apache Geronimo console 1.0 vulnerable to cross-site scripting]]></title>
+        <id>https://github.com/advisories/GHSA-2jxh-3cx8-xw65</id>
+        <link href="https://github.com/advisories/GHSA-2jxh-3cx8-xw65"/>
+        <updated>2022-07-28T15:28:01.000Z</updated>
+        <content type="html"><![CDATA[<p>Multiple cross-site scripting (XSS) vulnerabilities in Apache Geronimo 1.0 allow remote attackers to inject arbitrary web script or HTML via the (1) time parameter to cal2.jsp and (2) any invalid parameter, which causes an XSS when the log file is viewed by the Web-Access-Log viewer. Version 1.1 contains fixes for these issues.</p>
+<h3 id="references">References</h3>
+<ul>
+<li><a href="https://nvd.nist.gov/vuln/detail/CVE-2006-0254">https://nvd.nist.gov/vuln/detail/CVE-2006-0254</a></li>
+<li><a href="https://exchange.xforce.ibmcloud.com/vulnerabilities/24158">https://exchange.xforce.ibmcloud.com/vulnerabilities/24158</a></li>
+<li><a href="https://exchange.xforce.ibmcloud.com/vulnerabilities/24159">https://exchange.xforce.ibmcloud.com/vulnerabilities/24159</a></li>
+<li><a href="https://issues.apache.org/jira/secure/ReleaseNote.jspa?version=12310181&amp;styleName=Html&amp;projectId=10220&amp;Create=Create">https://issues.apache.org/jira/secure/ReleaseNote.jspa?version=12310181&amp;styleName=Html&amp;projectId=10220&amp;Create=Create</a></li>
+<li><a href="http://issues.apache.org/jira/browse/GERONIMO-1474">http://issues.apache.org/jira/browse/GERONIMO-1474</a></li>
+<li><a href="http://rhn.redhat.com/errata/RHSA-2008-0630.html">http://rhn.redhat.com/errata/RHSA-2008-0630.html</a></li>
+<li><a href="http://secunia.com/advisories/18485">http://secunia.com/advisories/18485</a></li>
+<li><a href="http://secunia.com/advisories/31493">http://secunia.com/advisories/31493</a></li>
+<li><a href="http://www.oliverkarow.de/research/geronimo_css.txt">http://www.oliverkarow.de/research/geronimo_css.txt</a></li>
+<li><a href="http://www.redhat.com/support/errata/RHSA-2008-0261.html">http://www.redhat.com/support/errata/RHSA-2008-0261.html</a></li>
+<li><a href="http://www.securityfocus.com/archive/1/421996/100/0/threaded">http://www.securityfocus.com/archive/1/421996/100/0/threaded</a></li>
+<li><a href="http://www.securityfocus.com/bid/16260">http://www.securityfocus.com/bid/16260</a></li>
+<li><a href="http://www.vupen.com/english/advisories/2006/0217">http://www.vupen.com/english/advisories/2006/0217</a></li>
+<li><a href="https://geronimo.apache.org/GMOxDOC11/release-notes-11txt.html">https://geronimo.apache.org/GMOxDOC11/release-notes-11txt.html</a></li>
+<li><a href="https://issues.apache.org/jira/secure/attachment/12322088/GERONIMO-1474.patch">https://issues.apache.org/jira/secure/attachment/12322088/GERONIMO-1474.patch</a></li>
+<li><a href="http://svn.apache.org/viewvc?view=revision&amp;revision=372322">http://svn.apache.org/viewvc?view=revision&amp;revision=372322</a></li>
+<li><a href="https://github.com/advisories/GHSA-2jxh-3cx8-xw65">https://github.com/advisories/GHSA-2jxh-3cx8-xw65</a></li>
+</ul>
+]]></content>
+        <author>
+            <name>GitHub</name>
+            <email>GitHub@noreply.github.com</email>
+            <uri>https://github.com/advisories/GHSA-2jxh-3cx8-xw65</uri>
+        </author>
+        <category label="severity" term="MODERATE"/>
+        <published>2022-05-01T06:38:20.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[com.gradle.plugin-publish:com.gradle.plugin-publish.gradle.plugin] Exposure of Sensitive Information in Gradle publish plugin]]></title>
+        <id>https://github.com/advisories/GHSA-cv78-v957-jx34</id>
+        <link href="https://github.com/advisories/GHSA-cv78-v957-jx34"/>
+        <updated>2022-07-27T22:17:47.000Z</updated>
+        <content type="html"><![CDATA[<p>All versions of com.gradle.plugin-publish before 0.11.0 are vulnerable to Insertion of Sensitive Information into Log File. When a plugin author publishes a Gradle plugin while running Gradle with the --info log level flag, the Gradle Logger logs an AWS pre-signed URL. If this build log is publicly visible (as it is in many popular public CI systems like TravisCI) this AWS pre-signed URL would allow a malicious actor to replace a recently uploaded plugin with their own.</p>
+<h3 id="references">References</h3>
+<ul>
+<li><a href="https://nvd.nist.gov/vuln/detail/CVE-2020-7599">https://nvd.nist.gov/vuln/detail/CVE-2020-7599</a></li>
+<li><a href="https://blog.gradle.org/plugin-portal-update">https://blog.gradle.org/plugin-portal-update</a></li>
+<li><a href="https://snyk.io/vuln/SNYK-JAVA-COMGRADLEPLUGINPUBLISH-559866">https://snyk.io/vuln/SNYK-JAVA-COMGRADLEPLUGINPUBLISH-559866</a></li>
+<li><a href="https://plugins.gradle.org/plugin/com.gradle.plugin-publish">https://plugins.gradle.org/plugin/com.gradle.plugin-publish</a></li>
+<li><a href="https://github.com/advisories/GHSA-cv78-v957-jx34">https://github.com/advisories/GHSA-cv78-v957-jx34</a></li>
+</ul>
+]]></content>
+        <author>
+            <name>GitHub</name>
+            <email>GitHub@noreply.github.com</email>
+            <uri>https://github.com/advisories/GHSA-cv78-v957-jx34</uri>
+        </author>
+        <category label="severity" term="MODERATE"/>
+        <published>2022-05-24T17:12:57.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[com.gradle.publish:plugin-publish-plugin] Exposure of Sensitive Information in Gradle publish plugin]]></title>
+        <id>https://github.com/advisories/GHSA-cv78-v957-jx34</id>
+        <link href="https://github.com/advisories/GHSA-cv78-v957-jx34"/>
+        <updated>2022-07-27T22:17:47.000Z</updated>
+        <content type="html"><![CDATA[<p>All versions of com.gradle.plugin-publish before 0.11.0 are vulnerable to Insertion of Sensitive Information into Log File. When a plugin author publishes a Gradle plugin while running Gradle with the --info log level flag, the Gradle Logger logs an AWS pre-signed URL. If this build log is publicly visible (as it is in many popular public CI systems like TravisCI) this AWS pre-signed URL would allow a malicious actor to replace a recently uploaded plugin with their own.</p>
+<h3 id="references">References</h3>
+<ul>
+<li><a href="https://nvd.nist.gov/vuln/detail/CVE-2020-7599">https://nvd.nist.gov/vuln/detail/CVE-2020-7599</a></li>
+<li><a href="https://blog.gradle.org/plugin-portal-update">https://blog.gradle.org/plugin-portal-update</a></li>
+<li><a href="https://snyk.io/vuln/SNYK-JAVA-COMGRADLEPLUGINPUBLISH-559866">https://snyk.io/vuln/SNYK-JAVA-COMGRADLEPLUGINPUBLISH-559866</a></li>
+<li><a href="https://plugins.gradle.org/plugin/com.gradle.plugin-publish">https://plugins.gradle.org/plugin/com.gradle.plugin-publish</a></li>
+<li><a href="https://github.com/advisories/GHSA-cv78-v957-jx34">https://github.com/advisories/GHSA-cv78-v957-jx34</a></li>
+</ul>
+]]></content>
+        <author>
+            <name>GitHub</name>
+            <email>GitHub@noreply.github.com</email>
+            <uri>https://github.com/advisories/GHSA-cv78-v957-jx34</uri>
+        </author>
+        <category label="severity" term="MODERATE"/>
+        <published>2022-05-24T17:12:57.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[io.dataease:dataease-plugin-common] Dataease before 1.11.2 access control issue allows attackers to arbitrarily uninstall plugin]]></title>
+        <id>https://github.com/advisories/GHSA-c2pj-rr68-pw94</id>
+        <link href="https://github.com/advisories/GHSA-c2pj-rr68-pw94"/>
+        <updated>2022-07-27T22:10:41.000Z</updated>
+        <content type="html"><![CDATA[<p>An access control issue in the component /api/plugin/uninstall Dataease v1.11.1 allows attackers to arbitrarily uninstall the plugin, a right normally reserved for the administrator. Version 1.11.2 contains a patch for this issue.</p>
+<h3 id="references">References</h3>
+<ul>
+<li><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-34112">https://nvd.nist.gov/vuln/detail/CVE-2022-34112</a></li>
+<li><a href="https://github.com/dataease/dataease/issues/2429">https://github.com/dataease/dataease/issues/2429</a></li>
+<li><a href="https://github.com/dataease/dataease/commit/5f611d3e3934816e9ad34e3d21807978001e2c8b">https://github.com/dataease/dataease/commit/5f611d3e3934816e9ad34e3d21807978001e2c8b</a></li>
+<li><a href="https://github.com/dataease/dataease/releases/tag/v1.11.2">https://github.com/dataease/dataease/releases/tag/v1.11.2</a></li>
+<li><a href="https://github.com/advisories/GHSA-c2pj-rr68-pw94">https://github.com/advisories/GHSA-c2pj-rr68-pw94</a></li>
+</ul>
+]]></content>
+        <author>
+            <name>GitHub</name>
+            <email>GitHub@noreply.github.com</email>
+            <uri>https://github.com/advisories/GHSA-c2pj-rr68-pw94</uri>
+        </author>
+        <category label="severity" term="HIGH"/>
+        <published>2022-07-23T00:00:15.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[io.dataease:dataease-plugin-common] Dataease before 1.11.2 allows arbitrary code execution via crafter plugin]]></title>
+        <id>https://github.com/advisories/GHSA-5469-c5p2-xv5g</id>
+        <link href="https://github.com/advisories/GHSA-5469-c5p2-xv5g"/>
+        <updated>2022-07-27T22:10:26.000Z</updated>
+        <content type="html"><![CDATA[<p>An issue in the component /api/plugin/upload of Dataease v1.11.1 allows attackers to execute arbitrary code via a crafted plugin. Version 1.11.2 contains a patch for the problem.</p>
+<h3 id="references">References</h3>
+<ul>
+<li><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-34113">https://nvd.nist.gov/vuln/detail/CVE-2022-34113</a></li>
+<li><a href="https://github.com/dataease/dataease/issues/2431">https://github.com/dataease/dataease/issues/2431</a></li>
+<li><a href="https://github.com/dataease/dataease/releases/tag/v1.11.2">https://github.com/dataease/dataease/releases/tag/v1.11.2</a></li>
+<li><a href="https://github.com/advisories/GHSA-5469-c5p2-xv5g">https://github.com/advisories/GHSA-5469-c5p2-xv5g</a></li>
+</ul>
+]]></content>
+        <author>
+            <name>GitHub</name>
+            <email>GitHub@noreply.github.com</email>
+            <uri>https://github.com/advisories/GHSA-5469-c5p2-xv5g</uri>
+        </author>
+        <category label="severity" term="HIGH"/>
+        <published>2022-07-23T00:00:15.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[org.apache.geronimo.framework:geronimo-jmx-remoting] Apache Geronimo JMX Remoting functionality allows remote code execution in 3.x before v3.0.1]]></title>
+        <id>https://github.com/advisories/GHSA-v64w-96p6-fx7w</id>
+        <link href="https://github.com/advisories/GHSA-v64w-96p6-fx7w"/>
+        <updated>2022-07-27T21:38:22.000Z</updated>
+        <content type="html"><![CDATA[<p>The JMX Remoting functionality in Apache Geronimo 3.x before 3.0.1, as used in IBM WebSphere Application Server (WAS) Community Edition 3.0.0.3 and other products, does not properly implement the RMI classloader, which allows remote attackers to execute arbitrary code by using the JMX connector to send a crafted serialized object.</p>
+<h3 id="references">References</h3>
+<ul>
+<li><a href="https://nvd.nist.gov/vuln/detail/CVE-2013-1777">https://nvd.nist.gov/vuln/detail/CVE-2013-1777</a></li>
+<li><a href="https://issues.apache.org/jira/browse/GERONIMO-6477">https://issues.apache.org/jira/browse/GERONIMO-6477</a></li>
+<li><a href="http://archives.neohapsis.com/archives/bugtraq/2013-07/0008.html">http://archives.neohapsis.com/archives/bugtraq/2013-07/0008.html</a></li>
+<li><a href="http://geronimo.apache.org/30x-security-report.html">http://geronimo.apache.org/30x-security-report.html</a></li>
+<li><a href="http://www-01.ibm.com/support/docview.wss?uid=swg21643282">http://www-01.ibm.com/support/docview.wss?uid=swg21643282</a></li>
+<li><a href="http://svn.apache.org/viewvc/geronimo/server/trunk">http://svn.apache.org/viewvc/geronimo/server/trunk</a></li>
+<li><a href="http://svn.apache.org/viewvc?view=revision&amp;revision=1458113">http://svn.apache.org/viewvc?view=revision&amp;revision=1458113</a></li>
+<li><a href="https://github.com/advisories/GHSA-v64w-96p6-fx7w">https://github.com/advisories/GHSA-v64w-96p6-fx7w</a></li>
+</ul>
+]]></content>
+        <author>
+            <name>GitHub</name>
+            <email>GitHub@noreply.github.com</email>
+            <uri>https://github.com/advisories/GHSA-v64w-96p6-fx7w</uri>
+        </author>
+        <category label="severity" term="HIGH"/>
+        <published>2022-05-17T04:48:11.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[org.jenkins-ci.plugins:support-core] Support Core Plugin before 2.79.1 stores sensitive data in plain text]]></title>
+        <id>https://github.com/advisories/GHSA-5m8f-v3gw-h94w</id>
+        <link href="https://github.com/advisories/GHSA-5m8f-v3gw-h94w"/>
+        <updated>2022-07-27T21:24:41.000Z</updated>
+        <content type="html"><![CDATA[<p>Jenkins Support Core Plugin 2.79 and earlier does not redact some sensitive information in the support bundle. Support Core Plugin 2.79.1 adds a list of keywords whose associated values are redacted.</p>
+<h3 id="references">References</h3>
+<ul>
+<li><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-25187">https://nvd.nist.gov/vuln/detail/CVE-2022-25187</a></li>
+<li><a href="https://www.jenkins.io/security/advisory/2022-02-15/#SECURITY-2186">https://www.jenkins.io/security/advisory/2022-02-15/#SECURITY-2186</a></li>
+<li><a href="https://github.com/advisories/GHSA-5m8f-v3gw-h94w">https://github.com/advisories/GHSA-5m8f-v3gw-h94w</a></li>
+</ul>
+]]></content>
+        <author>
+            <name>GitHub</name>
+            <email>GitHub@noreply.github.com</email>
+            <uri>https://github.com/advisories/GHSA-5m8f-v3gw-h94w</uri>
+        </author>
+        <category label="severity" term="MODERATE"/>
+        <published>2022-02-16T00:01:28.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[org.jenkins-ci.plugins:ssh-agent] Missing permission checks in SSH Agent Plugin allow enumerating credentials IDs]]></title>
+        <id>https://github.com/advisories/GHSA-9wxh-jjj5-67cv</id>
+        <link href="https://github.com/advisories/GHSA-9wxh-jjj5-67cv"/>
+        <updated>2022-07-27T21:24:05.000Z</updated>
+        <content type="html"><![CDATA[<p>Missing permission checks in Jenkins SSH Agent Plugin 1.23 and earlier allow attackers with Overall/Read access to enumerate credentials IDs of credentials stored in Jenkins. An enumeration of credentials IDs in SSH Agent Plugin 1.23.2 requires the appropriate permissions.</p>
+<h3 id="references">References</h3>
+<ul>
+<li><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-20620">https://nvd.nist.gov/vuln/detail/CVE-2022-20620</a></li>
+<li><a href="https://www.jenkins.io/security/advisory/2022-01-12/#SECURITY-2189">https://www.jenkins.io/security/advisory/2022-01-12/#SECURITY-2189</a></li>
+<li><a href="http://www.openwall.com/lists/oss-security/2022/01/12/6">http://www.openwall.com/lists/oss-security/2022/01/12/6</a></li>
+<li><a href="https://github.com/advisories/GHSA-9wxh-jjj5-67cv">https://github.com/advisories/GHSA-9wxh-jjj5-67cv</a></li>
+</ul>
+]]></content>
+        <author>
+            <name>GitHub</name>
+            <email>GitHub@noreply.github.com</email>
+            <uri>https://github.com/advisories/GHSA-9wxh-jjj5-67cv</uri>
+        </author>
+        <category label="severity" term="MODERATE"/>
+        <published>2022-01-13T00:00:58.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[org.jenkins-ci.plugins:squashtm-publisher] Squash TM Publisher (Squash4Jenkins) Plugin stores passwords stored in plain text]]></title>
+        <id>https://github.com/advisories/GHSA-9h79-5m2f-mqj2</id>
+        <link href="https://github.com/advisories/GHSA-9h79-5m2f-mqj2"/>
+        <updated>2022-07-27T21:14:57.000Z</updated>
+        <content type="html"><![CDATA[<p>Jenkins Squash TM Publisher (Squash4Jenkins) Plugin 1.0.0 and earlier stores passwords unencrypted in its global configuration file on the Jenkins controller where they can be viewed by users with access to the Jenkins controller file system.</p>
+<h3 id="references">References</h3>
+<ul>
+<li><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-34213">https://nvd.nist.gov/vuln/detail/CVE-2022-34213</a></li>
+<li><a href="https://www.jenkins.io/security/advisory/2022-06-22/#SECURITY-2089">https://www.jenkins.io/security/advisory/2022-06-22/#SECURITY-2089</a></li>
+<li><a href="https://github.com/advisories/GHSA-9h79-5m2f-mqj2">https://github.com/advisories/GHSA-9h79-5m2f-mqj2</a></li>
+</ul>
+]]></content>
+        <author>
+            <name>GitHub</name>
+            <email>GitHub@noreply.github.com</email>
+            <uri>https://github.com/advisories/GHSA-9h79-5m2f-mqj2</uri>
+        </author>
+        <category label="severity" term="MODERATE"/>
+        <published>2022-06-24T00:00:32.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[org.jenkins-ci.plugins:urltrigger] URLTrigger Plugin server-side request forgery vulnerability]]></title>
+        <id>https://github.com/advisories/GHSA-rv87-vcv4-fjvr</id>
+        <link href="https://github.com/advisories/GHSA-rv87-vcv4-fjvr"/>
+        <updated>2022-07-27T21:12:18.000Z</updated>
+        <content type="html"><![CDATA[<p>A server-side request forgery vulnerability exists in Jenkins URLTrigger Plugin 0.41 and earlier in URLTrigger.java that allows attackers with Overall/Read access to cause Jenkins to send a GET request to a specified URL. As of version 0.43, this form validation method no longer connects to a user provided URL.</p>
+<h3 id="references">References</h3>
+<ul>
+<li><a href="https://nvd.nist.gov/vuln/detail/CVE-2018-1000606">https://nvd.nist.gov/vuln/detail/CVE-2018-1000606</a></li>
+<li><a href="https://jenkins.io/security/advisory/2018-06-25/#SECURITY-819">https://jenkins.io/security/advisory/2018-06-25/#SECURITY-819</a></li>
+<li><a href="https://github.com/jenkinsci/urltrigger-plugin/commit/46220e69c220bacf8eb23911c8feba9dd68d1a26">https://github.com/jenkinsci/urltrigger-plugin/commit/46220e69c220bacf8eb23911c8feba9dd68d1a26</a></li>
+<li><a href="https://github.com/jenkinsci/urltrigger-plugin/commit/aec43e370550b26636aa9cab0f23a5cbcffdc44f">https://github.com/jenkinsci/urltrigger-plugin/commit/aec43e370550b26636aa9cab0f23a5cbcffdc44f</a></li>
+<li><a href="https://github.com/advisories/GHSA-rv87-vcv4-fjvr">https://github.com/advisories/GHSA-rv87-vcv4-fjvr</a></li>
+</ul>
+]]></content>
+        <author>
+            <name>GitHub</name>
+            <email>GitHub@noreply.github.com</email>
+            <uri>https://github.com/advisories/GHSA-rv87-vcv4-fjvr</uri>
+        </author>
+        <category label="severity" term="MODERATE"/>
+        <published>2022-05-14T03:05:26.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[com.amazonaws:codedeploy] AWS CodeDeploy Plugin stored AWS Secret Key in plain text]]></title>
+        <id>https://github.com/advisories/GHSA-h66p-m766-33fv</id>
+        <link href="https://github.com/advisories/GHSA-h66p-m766-33fv"/>
+        <updated>2022-07-27T20:57:57.000Z</updated>
+        <content type="html"><![CDATA[<p>Jenkins project Jenkins AWS CodeDeploy Plugin version 1.19 and earlier contains a Insufficiently Protected Credentials vulnerability in AWSCodeDeployPublisher.java that can result in Credentials Disclosure. This attack appears to be exploitable via local file access. </p>
+<p>AWS CodeDeploy Plugin 1.20 and newer stores the AWS Secret Key encrypted in the configuration files on disk and no longer transfers it to users viewing the configuration form in plain text. Existing jobs need to have their configuration saved for existing plain text secret keys to be overwritten.</p>
+<h3 id="references">References</h3>
+<ul>
+<li><a href="https://nvd.nist.gov/vuln/detail/CVE-2018-1000403">https://nvd.nist.gov/vuln/detail/CVE-2018-1000403</a></li>
+<li><a href="https://jenkins.io/security/advisory/2018-06-25/#SECURITY-833">https://jenkins.io/security/advisory/2018-06-25/#SECURITY-833</a></li>
+<li><a href="https://github.com/advisories/GHSA-h66p-m766-33fv">https://github.com/advisories/GHSA-h66p-m766-33fv</a></li>
+</ul>
+]]></content>
+        <author>
+            <name>GitHub</name>
+            <email>GitHub@noreply.github.com</email>
+            <uri>https://github.com/advisories/GHSA-h66p-m766-33fv</uri>
+        </author>
+        <category label="severity" term="HIGH"/>
+        <published>2022-05-13T01:48:37.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[io.github.skylot:jadx-core] skylot jadx affected by Incorrect Behavior Order in vulnerable dependency]]></title>
+        <id>https://github.com/advisories/GHSA-fjh6-p566-wr6q</id>
+        <link href="https://github.com/advisories/GHSA-fjh6-p566-wr6q"/>
+        <updated>2022-07-21T22:35:13.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="impact">Impact</h3>
+<p>Vulnerable library protobuf-java 3.11.4 (CVE-2021-22569)</p>
+<h3 id="patches">Patches</h3>
+<p>Dependency updated in jadx 1.4.3</p>
+<h3 id="references">References</h3>
+<p>According to the AquaSecurity report:
+<img alt="05F1C52A666E4FCC844ABD085BD55124" src="https://user-images.githubusercontent.com/118523/177364939-087e2144-9a8a-4594-ae90-eb2acb0a2036.png"></p>
+<p>Also, Maven repository have links to this and other vulnerabilities from dependencies:
+<a href="https://mvnrepository.com/artifact/com.google.protobuf/protobuf-java/3.11.4">https://mvnrepository.com/artifact/com.google.protobuf/protobuf-java/3.11.4</a></p>
+<h3 id="references-1">References</h3>
+<ul>
+<li><a href="https://github.com/skylot/jadx/security/advisories/GHSA-fjh6-p566-wr6q">https://github.com/skylot/jadx/security/advisories/GHSA-fjh6-p566-wr6q</a></li>
+<li><a href="https://github.com/skylot/jadx/releases/tag/v1.4.3">https://github.com/skylot/jadx/releases/tag/v1.4.3</a></li>
+<li><a href="https://github.com/advisories/GHSA-fjh6-p566-wr6q">https://github.com/advisories/GHSA-fjh6-p566-wr6q</a></li>
+</ul>
+]]></content>
+        <author>
+            <name>GitHub</name>
+            <email>GitHub@noreply.github.com</email>
+            <uri>https://github.com/advisories/GHSA-fjh6-p566-wr6q</uri>
+        </author>
+        <category label="severity" term="MODERATE"/>
+        <published>2022-07-21T22:35:12.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[xalan:xalan] Apache Xalan Java XSLT library integer truncation issue when processing malicious XSLT stylesheets]]></title>
+        <id>https://github.com/advisories/GHSA-9339-86wc-4qgf</id>
+        <link href="https://github.com/advisories/GHSA-9339-86wc-4qgf"/>
+        <updated>2022-07-29T13:02:23.000Z</updated>
+        <content type="html"><![CDATA[<p>The Apache Xalan Java XSLT library is vulnerable to an integer truncation issue when processing malicious XSLT stylesheets. This can be used to corrupt Java class files generated by the internal XSLTC compiler and execute arbitrary Java bytecode. The Apache Xalan Java project is dormant and in the process of being retired. No future releases of Apache Xalan Java to address this issue are expected. Note: Java runtimes (such as OpenJDK) include repackaged copies of Xalan.</p>
+<h3 id="references">References</h3>
+<ul>
+<li><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-34169">https://nvd.nist.gov/vuln/detail/CVE-2022-34169</a></li>
+<li><a href="https://lists.apache.org/thread/12pxy4phsry6c34x2ol4fft6xlho4kyw">https://lists.apache.org/thread/12pxy4phsry6c34x2ol4fft6xlho4kyw</a></li>
+<li><a href="https://lists.apache.org/thread/2qvl7r43wb4t8p9dd9om1bnkssk07sn8">https://lists.apache.org/thread/2qvl7r43wb4t8p9dd9om1bnkssk07sn8</a></li>
+<li><a href="http://www.openwall.com/lists/oss-security/2022/07/19/5">http://www.openwall.com/lists/oss-security/2022/07/19/5</a></li>
+<li><a href="http://www.openwall.com/lists/oss-security/2022/07/19/6">http://www.openwall.com/lists/oss-security/2022/07/19/6</a></li>
+<li><a href="http://www.openwall.com/lists/oss-security/2022/07/20/2">http://www.openwall.com/lists/oss-security/2022/07/20/2</a></li>
+<li><a href="http://www.openwall.com/lists/oss-security/2022/07/20/3">http://www.openwall.com/lists/oss-security/2022/07/20/3</a></li>
+<li><a href="https://www.oracle.com/security-alerts/cpujul2022.html">https://www.oracle.com/security-alerts/cpujul2022.html</a></li>
+<li><a href="https://www.debian.org/security/2022/dsa-5188">https://www.debian.org/security/2022/dsa-5188</a></li>
+<li><a href="https://www.debian.org/security/2022/dsa-5192">https://www.debian.org/security/2022/dsa-5192</a></li>
+<li><a href="https://github.com/advisories/GHSA-9339-86wc-4qgf">https://github.com/advisories/GHSA-9339-86wc-4qgf</a></li>
+</ul>
+]]></content>
+        <author>
+            <name>GitHub</name>
+            <email>GitHub@noreply.github.com</email>
+            <uri>https://github.com/advisories/GHSA-9339-86wc-4qgf</uri>
+        </author>
+        <category label="severity" term="CRITICAL"/>
+        <published>2022-07-20T00:00:18.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[org.grails:grails-databinding] Grails framework Remote Code Execution via Data Binding]]></title>
+        <id>https://github.com/advisories/GHSA-6rh6-x8ww-9h97</id>
+        <link href="https://github.com/advisories/GHSA-6rh6-x8ww-9h97"/>
+        <updated>2022-07-29T17:38:35.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="impact">Impact</h3>
+<p>A vulnerability has been discovered in the Grails data-binding logic which allows for Remote Code Execution in a Grails application. This exploit requires the application to be running on Java 8, either deployed as a WAR to a servlet container, or an executable JAR.  </p>
+<h3 id="patches">Patches</h3>
+<p>Grails framework versions 5.2.1, 5.1.9, 4.1.1, and 3.3.15</p>
+<h3 id="references">References</h3>
+<p><a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-35912">https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-35912</a>
+<a href="https://grails.org/blog/2022-07-18-rce-vulnerability.html">https://grails.org/blog/2022-07-18-rce-vulnerability.html</a></p>
+<h3 id="for-more-information">For more information</h3>
+<p>If you have any questions or comments about this advisory:</p>
+<ul>
+<li><a href="https://grails.org/blog/2022-07-18-rce-vulnerability.html">https://grails.org/blog/2022-07-18-rce-vulnerability.html</a></li>
+<li><a href="https://github.com/grails/grails-core/issues/12626">https://github.com/grails/grails-core/issues/12626</a></li>
+<li>Email us at <a href="mailto:info@grails.org">info@grails.org</a></li>
+</ul>
+<h3 id="credit">Credit</h3>
+<p>This vulnerability was discovered by  <a href="https://github.com/meizjm3i">meizjm3i</a> and <a href="https://github.com/codeplutos">codeplutos</a> of AntGroup FG Security Lab</p>
+<h3 id="references-1">References</h3>
+<ul>
+<li><a href="https://github.com/grails/grails-core/security/advisories/GHSA-6rh6-x8ww-9h97">https://github.com/grails/grails-core/security/advisories/GHSA-6rh6-x8ww-9h97</a></li>
+<li><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-35912">https://nvd.nist.gov/vuln/detail/CVE-2022-35912</a></li>
+<li><a href="https://github.com/grails/grails-core/issues/12626">https://github.com/grails/grails-core/issues/12626</a></li>
+<li><a href="https://grails.org/blog/2022-07-18-rce-vulnerability.html">https://grails.org/blog/2022-07-18-rce-vulnerability.html</a></li>
+<li><a href="http://www.openwall.com/lists/oss-security/2022/07/20/4">http://www.openwall.com/lists/oss-security/2022/07/20/4</a></li>
+<li><a href="https://github.com/advisories/GHSA-6rh6-x8ww-9h97">https://github.com/advisories/GHSA-6rh6-x8ww-9h97</a></li>
+</ul>
+]]></content>
+        <author>
+            <name>GitHub</name>
+            <email>GitHub@noreply.github.com</email>
+            <uri>https://github.com/advisories/GHSA-6rh6-x8ww-9h97</uri>
+        </author>
+        <category label="severity" term="CRITICAL"/>
+        <published>2022-07-21T21:38:28.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[org.grails:grails-databinding] Grails framework Remote Code Execution via Data Binding]]></title>
+        <id>https://github.com/advisories/GHSA-6rh6-x8ww-9h97</id>
+        <link href="https://github.com/advisories/GHSA-6rh6-x8ww-9h97"/>
+        <updated>2022-07-29T17:38:35.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="impact">Impact</h3>
+<p>A vulnerability has been discovered in the Grails data-binding logic which allows for Remote Code Execution in a Grails application. This exploit requires the application to be running on Java 8, either deployed as a WAR to a servlet container, or an executable JAR.  </p>
+<h3 id="patches">Patches</h3>
+<p>Grails framework versions 5.2.1, 5.1.9, 4.1.1, and 3.3.15</p>
+<h3 id="references">References</h3>
+<p><a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-35912">https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-35912</a>
+<a href="https://grails.org/blog/2022-07-18-rce-vulnerability.html">https://grails.org/blog/2022-07-18-rce-vulnerability.html</a></p>
+<h3 id="for-more-information">For more information</h3>
+<p>If you have any questions or comments about this advisory:</p>
+<ul>
+<li><a href="https://grails.org/blog/2022-07-18-rce-vulnerability.html">https://grails.org/blog/2022-07-18-rce-vulnerability.html</a></li>
+<li><a href="https://github.com/grails/grails-core/issues/12626">https://github.com/grails/grails-core/issues/12626</a></li>
+<li>Email us at <a href="mailto:info@grails.org">info@grails.org</a></li>
+</ul>
+<h3 id="credit">Credit</h3>
+<p>This vulnerability was discovered by  <a href="https://github.com/meizjm3i">meizjm3i</a> and <a href="https://github.com/codeplutos">codeplutos</a> of AntGroup FG Security Lab</p>
+<h3 id="references-1">References</h3>
+<ul>
+<li><a href="https://github.com/grails/grails-core/security/advisories/GHSA-6rh6-x8ww-9h97">https://github.com/grails/grails-core/security/advisories/GHSA-6rh6-x8ww-9h97</a></li>
+<li><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-35912">https://nvd.nist.gov/vuln/detail/CVE-2022-35912</a></li>
+<li><a href="https://github.com/grails/grails-core/issues/12626">https://github.com/grails/grails-core/issues/12626</a></li>
+<li><a href="https://grails.org/blog/2022-07-18-rce-vulnerability.html">https://grails.org/blog/2022-07-18-rce-vulnerability.html</a></li>
+<li><a href="http://www.openwall.com/lists/oss-security/2022/07/20/4">http://www.openwall.com/lists/oss-security/2022/07/20/4</a></li>
+<li><a href="https://github.com/advisories/GHSA-6rh6-x8ww-9h97">https://github.com/advisories/GHSA-6rh6-x8ww-9h97</a></li>
+</ul>
+]]></content>
+        <author>
+            <name>GitHub</name>
+            <email>GitHub@noreply.github.com</email>
+            <uri>https://github.com/advisories/GHSA-6rh6-x8ww-9h97</uri>
+        </author>
+        <category label="severity" term="CRITICAL"/>
+        <published>2022-07-21T21:38:28.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[org.grails:grails-databinding] Grails framework Remote Code Execution via Data Binding]]></title>
+        <id>https://github.com/advisories/GHSA-6rh6-x8ww-9h97</id>
+        <link href="https://github.com/advisories/GHSA-6rh6-x8ww-9h97"/>
+        <updated>2022-07-29T17:38:35.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="impact">Impact</h3>
+<p>A vulnerability has been discovered in the Grails data-binding logic which allows for Remote Code Execution in a Grails application. This exploit requires the application to be running on Java 8, either deployed as a WAR to a servlet container, or an executable JAR.  </p>
+<h3 id="patches">Patches</h3>
+<p>Grails framework versions 5.2.1, 5.1.9, 4.1.1, and 3.3.15</p>
+<h3 id="references">References</h3>
+<p><a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-35912">https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-35912</a>
+<a href="https://grails.org/blog/2022-07-18-rce-vulnerability.html">https://grails.org/blog/2022-07-18-rce-vulnerability.html</a></p>
+<h3 id="for-more-information">For more information</h3>
+<p>If you have any questions or comments about this advisory:</p>
+<ul>
+<li><a href="https://grails.org/blog/2022-07-18-rce-vulnerability.html">https://grails.org/blog/2022-07-18-rce-vulnerability.html</a></li>
+<li><a href="https://github.com/grails/grails-core/issues/12626">https://github.com/grails/grails-core/issues/12626</a></li>
+<li>Email us at <a href="mailto:info@grails.org">info@grails.org</a></li>
+</ul>
+<h3 id="credit">Credit</h3>
+<p>This vulnerability was discovered by  <a href="https://github.com/meizjm3i">meizjm3i</a> and <a href="https://github.com/codeplutos">codeplutos</a> of AntGroup FG Security Lab</p>
+<h3 id="references-1">References</h3>
+<ul>
+<li><a href="https://github.com/grails/grails-core/security/advisories/GHSA-6rh6-x8ww-9h97">https://github.com/grails/grails-core/security/advisories/GHSA-6rh6-x8ww-9h97</a></li>
+<li><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-35912">https://nvd.nist.gov/vuln/detail/CVE-2022-35912</a></li>
+<li><a href="https://github.com/grails/grails-core/issues/12626">https://github.com/grails/grails-core/issues/12626</a></li>
+<li><a href="https://grails.org/blog/2022-07-18-rce-vulnerability.html">https://grails.org/blog/2022-07-18-rce-vulnerability.html</a></li>
+<li><a href="http://www.openwall.com/lists/oss-security/2022/07/20/4">http://www.openwall.com/lists/oss-security/2022/07/20/4</a></li>
+<li><a href="https://github.com/advisories/GHSA-6rh6-x8ww-9h97">https://github.com/advisories/GHSA-6rh6-x8ww-9h97</a></li>
+</ul>
+]]></content>
+        <author>
+            <name>GitHub</name>
+            <email>GitHub@noreply.github.com</email>
+            <uri>https://github.com/advisories/GHSA-6rh6-x8ww-9h97</uri>
+        </author>
+        <category label="severity" term="CRITICAL"/>
+        <published>2022-07-21T21:38:28.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[org.grails:grails-databinding] Grails framework Remote Code Execution via Data Binding]]></title>
+        <id>https://github.com/advisories/GHSA-6rh6-x8ww-9h97</id>
+        <link href="https://github.com/advisories/GHSA-6rh6-x8ww-9h97"/>
+        <updated>2022-07-29T17:38:35.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="impact">Impact</h3>
+<p>A vulnerability has been discovered in the Grails data-binding logic which allows for Remote Code Execution in a Grails application. This exploit requires the application to be running on Java 8, either deployed as a WAR to a servlet container, or an executable JAR.  </p>
+<h3 id="patches">Patches</h3>
+<p>Grails framework versions 5.2.1, 5.1.9, 4.1.1, and 3.3.15</p>
+<h3 id="references">References</h3>
+<p><a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-35912">https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-35912</a>
+<a href="https://grails.org/blog/2022-07-18-rce-vulnerability.html">https://grails.org/blog/2022-07-18-rce-vulnerability.html</a></p>
+<h3 id="for-more-information">For more information</h3>
+<p>If you have any questions or comments about this advisory:</p>
+<ul>
+<li><a href="https://grails.org/blog/2022-07-18-rce-vulnerability.html">https://grails.org/blog/2022-07-18-rce-vulnerability.html</a></li>
+<li><a href="https://github.com/grails/grails-core/issues/12626">https://github.com/grails/grails-core/issues/12626</a></li>
+<li>Email us at <a href="mailto:info@grails.org">info@grails.org</a></li>
+</ul>
+<h3 id="credit">Credit</h3>
+<p>This vulnerability was discovered by  <a href="https://github.com/meizjm3i">meizjm3i</a> and <a href="https://github.com/codeplutos">codeplutos</a> of AntGroup FG Security Lab</p>
+<h3 id="references-1">References</h3>
+<ul>
+<li><a href="https://github.com/grails/grails-core/security/advisories/GHSA-6rh6-x8ww-9h97">https://github.com/grails/grails-core/security/advisories/GHSA-6rh6-x8ww-9h97</a></li>
+<li><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-35912">https://nvd.nist.gov/vuln/detail/CVE-2022-35912</a></li>
+<li><a href="https://github.com/grails/grails-core/issues/12626">https://github.com/grails/grails-core/issues/12626</a></li>
+<li><a href="https://grails.org/blog/2022-07-18-rce-vulnerability.html">https://grails.org/blog/2022-07-18-rce-vulnerability.html</a></li>
+<li><a href="http://www.openwall.com/lists/oss-security/2022/07/20/4">http://www.openwall.com/lists/oss-security/2022/07/20/4</a></li>
+<li><a href="https://github.com/advisories/GHSA-6rh6-x8ww-9h97">https://github.com/advisories/GHSA-6rh6-x8ww-9h97</a></li>
+</ul>
+]]></content>
+        <author>
+            <name>GitHub</name>
+            <email>GitHub@noreply.github.com</email>
+            <uri>https://github.com/advisories/GHSA-6rh6-x8ww-9h97</uri>
+        </author>
+        <category label="severity" term="CRITICAL"/>
+        <published>2022-07-21T21:38:28.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[org.apache.hive:hive] Apache Hive before 3.1.3 `CREATE` and `DROP` function operations do not check for necessary authorization.]]></title>
+        <id>https://github.com/advisories/GHSA-v3p8-j597-3xg8</id>
+        <link href="https://github.com/advisories/GHSA-v3p8-j597-3xg8"/>
+        <updated>2022-07-22T16:28:26.000Z</updated>
+        <content type="html"><![CDATA[<p>Apache Hive before 3.1.3 <code>CREATE</code> and <code>DROP</code> function operations do not check for necessary authorization of involved entities in the query. It was found that an unauthorized user can manipulate an existing UDF without having the privileges to do so. This allowed unauthorized or underprivileged users to drop and recreate UDFs pointing them to new jars that could be potentially malicious.</p>
+<h3 id="references">References</h3>
+<ul>
+<li><a href="https://nvd.nist.gov/vuln/detail/CVE-2021-34538">https://nvd.nist.gov/vuln/detail/CVE-2021-34538</a></li>
+<li><a href="https://lists.apache.org/thread/oqqgnhz4c6nxsfd0xstosnk0g15f7354">https://lists.apache.org/thread/oqqgnhz4c6nxsfd0xstosnk0g15f7354</a></li>
+<li><a href="https://github.com/advisories/GHSA-v3p8-j597-3xg8">https://github.com/advisories/GHSA-v3p8-j597-3xg8</a></li>
+</ul>
+]]></content>
+        <author>
+            <name>GitHub</name>
+            <email>GitHub@noreply.github.com</email>
+            <uri>https://github.com/advisories/GHSA-v3p8-j597-3xg8</uri>
+        </author>
+        <category label="severity" term="HIGH"/>
+        <published>2022-07-17T00:00:45.000Z</published>
+    </entry>
+</feed>

