@@ -6,6 +6,20 @@
     "description": "Security Advisory for JavaScript packages hosted at npmjs.com on GitHub",
     "items": [
         {
+            "content_html": "<p>The package ts-deepmerge before version 2.0.2 is vulnerable to Prototype Pollution due to missing sanitization of the <code>merge</code> function.</p>\n<h3 id=\"references\">References</h3>\n<ul>\n<li><a href=\"https://nvd.nist.gov/vuln/detail/CVE-2022-25907\">https://nvd.nist.gov/vuln/detail/CVE-2022-25907</a></li>\n<li><a href=\"https://github.com/voodoocreation/ts-deepmerge/commit/9be5148773343c57be9de39728d6ead18eddf10b\">https://github.com/voodoocreation/ts-deepmerge/commit/9be5148773343c57be9de39728d6ead18eddf10b</a></li>\n<li><a href=\"https://github.com/voodoocreation/ts-deepmerge/releases/tag/2.0.2\">https://github.com/voodoocreation/ts-deepmerge/releases/tag/2.0.2</a></li>\n<li><a href=\"https://security.snyk.io/vuln/SNYK-JS-TSDEEPMERGE-2959975\">https://security.snyk.io/vuln/SNYK-JS-TSDEEPMERGE-2959975</a></li>\n<li><a href=\"https://github.com/advisories/GHSA-7qqq-gh2f-wq76\">https://github.com/advisories/GHSA-7qqq-gh2f-wq76</a></li>\n</ul>\n",
+            "url": "https://github.com/advisories/GHSA-7qqq-gh2f-wq76",
+            "title": "[ts-deepmerge] ts-deepmerge before 2.0.2 vulnerable to Prototype Pollution",
+            "date_modified": "2022-08-11T18:13:23.000Z",
+            "date_published": "2022-08-10T00:00:31.000Z",
+            "author": {
+                "name": "GitHub",
+                "url": "https://github.com/advisories/GHSA-7qqq-gh2f-wq76"
+            },
+            "tags": [
+                "HIGH"
+            ]
+        },
+        {
             "content_html": "<p>A command injection vulnerability affects all versions of package npos-tesseract. The injection point is located in line 55 in lib/ocr.js.</p>\n<h3 id=\"references\">References</h3>\n<ul>\n<li><a href=\"https://nvd.nist.gov/vuln/detail/CVE-2020-28453\">https://nvd.nist.gov/vuln/detail/CVE-2020-28453</a></li>\n<li><a href=\"https://security.snyk.io/vuln/SNYK-JS-NPOSTESSERACT-1051031\">https://security.snyk.io/vuln/SNYK-JS-NPOSTESSERACT-1051031</a></li>\n<li><a href=\"https://github.com/advisories/GHSA-mpwp-pf96-9g4r\">https://github.com/advisories/GHSA-mpwp-pf96-9g4r</a></li>\n</ul>\n",
             "url": "https://github.com/advisories/GHSA-mpwp-pf96-9g4r",
             "title": "[npos-tesseract] npos-tesseract Command Injection vulnerability",
@@ -266,20 +280,6 @@
             "author": {
                 "name": "GitHub",
                 "url": "https://github.com/advisories/GHSA-gq75-5gc3-rfwg"
-            },
-            "tags": [
-                "MODERATE"
-            ]
-        },
-        {
-            "content_html": "<p>This affects all versions of package markdown-it-toc. The title of the generated toc and the contents of the header are not escaped.</p>\n<h3 id=\"references\">References</h3>\n<ul>\n<li><a href=\"https://nvd.nist.gov/vuln/detail/CVE-2020-28455\">https://nvd.nist.gov/vuln/detail/CVE-2020-28455</a></li>\n<li><a href=\"https://security.snyk.io/vuln/SNYK-JS-MARKDOWNITTOC-1044067\">https://security.snyk.io/vuln/SNYK-JS-MARKDOWNITTOC-1044067</a></li>\n<li><a href=\"https://github.com/advisories/GHSA-wfvx-fx73-3rfj\">https://github.com/advisories/GHSA-wfvx-fx73-3rfj</a></li>\n</ul>\n",
-            "url": "https://github.com/advisories/GHSA-wfvx-fx73-3rfj",
-            "title": "[markdown-it-toc] markdown-it-toc Cross-site Scripting due to title of generated toc and contents of header not being escaped",
-            "date_modified": "2022-08-06T09:35:57.000Z",
-            "date_published": "2022-07-26T00:01:05.000Z",
-            "author": {
-                "name": "GitHub",
-                "url": "https://github.com/advisories/GHSA-wfvx-fx73-3rfj"
             },
             "tags": [
                 "MODERATE"
