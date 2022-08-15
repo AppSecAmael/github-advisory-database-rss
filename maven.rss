@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://azu.github.io/github-advisory-database-rss/maven.rss</id>
     <title>Security Advisory for Java artifacts hosted at the Maven central repository</title>
-    <updated>2022-08-15T20:11:01.526Z</updated>
+    <updated>2022-08-15T21:09:23.563Z</updated>
     <generator>github-advisory-database-rss</generator>
     <link rel="alternate" href="https://github.com/advisories?query=type%3Areviewed+ecosystem%3Amaven"/>
     <subtitle>Security Advisory for Java artifacts hosted at the Maven central repository on GitHub</subtitle>
@@ -246,7 +246,7 @@
         <title type="html"><![CDATA[[org.neo4j.procedure:apoc] Neo4j Graph apoc plugins Partial Path Traversal Vulnerability]]></title>
         <id>https://github.com/advisories/GHSA-78f9-745f-278p</id>
         <link href="https://github.com/advisories/GHSA-78f9-745f-278p"/>
-        <updated>2022-08-13T02:53:21.000Z</updated>
+        <updated>2022-08-15T20:13:20.000Z</updated>
         <content type="html"><![CDATA[<h3 id="impact">Impact</h3>
 <p>A partial Directory Traversal Vulnerability found in <code>apoc.log.stream</code> function of apoc plugins in Neo4j Graph database. 
 This issue allows a malicious actor to potentially break out of the expected directory. The impact is limited to sibling directories. For example, <code>userControlled.getCanonicalPath().startsWith("/usr/out")</code> will allow an attacker to access a directory with a name like <code>/usr/outnot</code>.</p>
@@ -268,6 +268,8 @@ This issue allows a malicious actor to potentially break out of the expected dir
 <li><a href="https://github.com/neo4j-contrib/neo4j-apoc-procedures/pull/3080">https://github.com/neo4j-contrib/neo4j-apoc-procedures/pull/3080</a></li>
 <li><a href="https://github.com/neo4j-contrib/neo4j-apoc-procedures/commit/d2f415c6f703bbc2cda4a753928821ff15d5c620">https://github.com/neo4j-contrib/neo4j-apoc-procedures/commit/d2f415c6f703bbc2cda4a753928821ff15d5c620</a></li>
 <li><a href="https://github.com/neo4j-contrib/neo4j-apoc-procedures/commit/fe9f8c77269f5a742585c1d62324eb70755de510">https://github.com/neo4j-contrib/neo4j-apoc-procedures/commit/fe9f8c77269f5a742585c1d62324eb70755de510</a></li>
+<li><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-37423">https://nvd.nist.gov/vuln/detail/CVE-2022-37423</a></li>
+<li><a href="https://neo4j.com/docs/aura/platform/apoc/">https://neo4j.com/docs/aura/platform/apoc/</a></li>
 <li><a href="https://github.com/advisories/GHSA-78f9-745f-278p">https://github.com/advisories/GHSA-78f9-745f-278p</a></li>
 </ul>
 ]]></content>
@@ -283,7 +285,7 @@ This issue allows a malicious actor to potentially break out of the expected dir
         <title type="html"><![CDATA[[org.neo4j.procedure:apoc] Neo4j Graph apoc plugins Partial Path Traversal Vulnerability]]></title>
         <id>https://github.com/advisories/GHSA-78f9-745f-278p</id>
         <link href="https://github.com/advisories/GHSA-78f9-745f-278p"/>
-        <updated>2022-08-13T02:53:21.000Z</updated>
+        <updated>2022-08-15T20:13:20.000Z</updated>
         <content type="html"><![CDATA[<h3 id="impact">Impact</h3>
 <p>A partial Directory Traversal Vulnerability found in <code>apoc.log.stream</code> function of apoc plugins in Neo4j Graph database. 
 This issue allows a malicious actor to potentially break out of the expected directory. The impact is limited to sibling directories. For example, <code>userControlled.getCanonicalPath().startsWith("/usr/out")</code> will allow an attacker to access a directory with a name like <code>/usr/outnot</code>.</p>
@@ -305,6 +307,8 @@ This issue allows a malicious actor to potentially break out of the expected dir
 <li><a href="https://github.com/neo4j-contrib/neo4j-apoc-procedures/pull/3080">https://github.com/neo4j-contrib/neo4j-apoc-procedures/pull/3080</a></li>
 <li><a href="https://github.com/neo4j-contrib/neo4j-apoc-procedures/commit/d2f415c6f703bbc2cda4a753928821ff15d5c620">https://github.com/neo4j-contrib/neo4j-apoc-procedures/commit/d2f415c6f703bbc2cda4a753928821ff15d5c620</a></li>
 <li><a href="https://github.com/neo4j-contrib/neo4j-apoc-procedures/commit/fe9f8c77269f5a742585c1d62324eb70755de510">https://github.com/neo4j-contrib/neo4j-apoc-procedures/commit/fe9f8c77269f5a742585c1d62324eb70755de510</a></li>
+<li><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-37423">https://nvd.nist.gov/vuln/detail/CVE-2022-37423</a></li>
+<li><a href="https://neo4j.com/docs/aura/platform/apoc/">https://neo4j.com/docs/aura/platform/apoc/</a></li>
 <li><a href="https://github.com/advisories/GHSA-78f9-745f-278p">https://github.com/advisories/GHSA-78f9-745f-278p</a></li>
 </ul>
 ]]></content>
