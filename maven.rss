@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://azu.github.io/github-advisory-database-rss/maven.rss</id>
     <title>Security Advisory for Java artifacts hosted at the Maven central repository</title>
-    <updated>2022-08-18T18:12:21.931Z</updated>
+    <updated>2022-08-18T19:09:13.721Z</updated>
     <generator>github-advisory-database-rss</generator>
     <link rel="alternate" href="https://github.com/advisories?query=type%3Areviewed+ecosystem%3Amaven"/>
     <subtitle>Security Advisory for Java artifacts hosted at the Maven central repository on GitHub</subtitle>
@@ -11,6 +11,125 @@
     <category term="HIGH"/>
     <category term="MODERATE"/>
     <category term="LOW"/>
+    <entry>
+        <title type="html"><![CDATA[[com.github.jlangch:venice] Venice vulnerable to Partial Path Traversal issue within the functions `load-file` and `load-resource`]]></title>
+        <id>https://github.com/advisories/GHSA-4mmh-5vw7-rgvj</id>
+        <link href="https://github.com/advisories/GHSA-4mmh-5vw7-rgvj"/>
+        <updated>2022-08-18T19:07:59.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="impact">Impact</h3>
+<p>A partial path traversal issue exists within the functions <code>load-file</code> and <code>load-resource</code>. These functions can be limited to load files from a list of load paths.</p>
+<p>Assuming Venice has been configured with the load paths: <code>[ "/Users/foo/resources" ]</code> </p>
+<p>When passing <strong>relative</strong> paths to these two vulnerable functions everything is fine:
+<code>(load-resource "test.png")</code>   =&gt; loads the file "/Users/foo/resources/test.png"
+<code>(load-resource "../resources-alt/test.png")</code>   =&gt; rejected, outside the load path</p>
+<p>When passing <strong>absolute</strong> paths to these two vulnerable functions Venice may return files outside the configured load paths:
+<code>(load-resource "/Users/foo/resources/test.png")</code>   =&gt; loads the file "/Users/foo/resources/test.png"
+<code>(load-resource "/Users/foo/resources-alt/test.png")</code>   =&gt; loads the file "/Users/foo/resources-alt/test.png" !!!
+The latter call suffers from the <em>Partial Path Traversal</em> vulnerability.</p>
+<p>This issue’s scope is limited to absolute paths whose name prefix matches a load path. E.g. for a load-path <code>"/Users/foo/resources"</code>, the actor can cause loading a resource also from <code>"/Users/foo/resources-alt"</code>, but not from <code>"/Users/foo/images"</code>.</p>
+<p>Versions of Venice before and including v1.10.16 are affected by this issue.</p>
+<h3 id="patches">Patches</h3>
+<p>Upgrade to Venice &gt;= 1.10.17, if you are on a version &lt; 1.10.17</p>
+<h3 id="workarounds">Workarounds</h3>
+<p>If you cannot upgrade the library, you can control the functions that can be used in Venice with a sandbox. If it is appropriate, the functions <code>load-file</code> and <code>load-resource</code> can be blacklisted in the sandbox.</p>
+<h3 id="references">References</h3>
+<ul>
+<li><a href="https://github.com/jlangch/venice/pull/4/commits/c942c73136333bc493050910f171a48e6f575b23">PR</a></li>
+</ul>
+<h3 id="for-more-information">For more information</h3>
+<p>If you have any questions or comments about this advisory:</p>
+<ul>
+<li>Open an issue in <a href="https://github.com/jlangch/venice">GitHub Venice</a></li>
+<li>Email us at <a href="mailto:juerg.ch@ggaweb.ch">juerg.ch</a></li>
+</ul>
+<h3 id="credits">Credits</h3>
+<p>I want to publicly recognize the contribution of <a href="https://github.com/JLLeitschuh">Jonathan Leitschuh</a> for reporting this issue.</p>
+<h3 id="references-1">References</h3>
+<ul>
+<li><a href="https://github.com/jlangch/venice/security/advisories/GHSA-4mmh-5vw7-rgvj">https://github.com/jlangch/venice/security/advisories/GHSA-4mmh-5vw7-rgvj</a></li>
+<li><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-36007">https://nvd.nist.gov/vuln/detail/CVE-2022-36007</a></li>
+<li><a href="https://github.com/jlangch/venice/commit/215ae91bb964013b0a2d70718a692832d561ae0a">https://github.com/jlangch/venice/commit/215ae91bb964013b0a2d70718a692832d561ae0a</a></li>
+<li><a href="https://github.com/jlangch/venice/commit/c942c73136333bc493050910f171a48e6f575b23">https://github.com/jlangch/venice/commit/c942c73136333bc493050910f171a48e6f575b23</a></li>
+<li><a href="https://github.com/jlangch/venice/releases/tag/v1.10.17">https://github.com/jlangch/venice/releases/tag/v1.10.17</a></li>
+<li><a href="https://github.com/advisories/GHSA-4mmh-5vw7-rgvj">https://github.com/advisories/GHSA-4mmh-5vw7-rgvj</a></li>
+</ul>
+]]></content>
+        <author>
+            <name>GitHub</name>
+            <email>GitHub@noreply.github.com</email>
+            <uri>https://github.com/advisories/GHSA-4mmh-5vw7-rgvj</uri>
+        </author>
+        <category label="MODERATE" term="severity"/>
+        <published>2022-08-18T19:07:58.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[org.keycloak:keycloak-saml-core] Keycloak allows arbitrary Javascript to be uploaded for SAML protocol mapper even if UPLOAD_SCRIPTS feature disabled]]></title>
+        <id>https://github.com/advisories/GHSA-q2gp-gph3-88x9</id>
+        <link href="https://github.com/advisories/GHSA-q2gp-gph3-88x9"/>
+        <updated>2022-08-18T18:53:18.000Z</updated>
+        <content type="html"><![CDATA[<p>An issue was discovered in Keycloak that allows arbitrary Javascript to be uploaded for the SAML protocol mapper even if the UPLOAD_SCRIPTS feature is disabled.</p>
+<h3 id="references">References</h3>
+<ul>
+<li><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-2668">https://nvd.nist.gov/vuln/detail/CVE-2022-2668</a></li>
+<li><a href="https://access.redhat.com/security/cve/CVE-2022-2668">https://access.redhat.com/security/cve/CVE-2022-2668</a></li>
+<li><a href="https://bugzilla.redhat.com/show_bug.cgi?id=2115392">https://bugzilla.redhat.com/show_bug.cgi?id=2115392</a></li>
+<li><a href="https://github.com/advisories/GHSA-q2gp-gph3-88x9">https://github.com/advisories/GHSA-q2gp-gph3-88x9</a></li>
+</ul>
+]]></content>
+        <author>
+            <name>GitHub</name>
+            <email>GitHub@noreply.github.com</email>
+            <uri>https://github.com/advisories/GHSA-q2gp-gph3-88x9</uri>
+        </author>
+        <category label="HIGH" term="severity"/>
+        <published>2022-08-06T00:00:42.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[io.undertow:undertow-core] Undertow vulnerable to Dos via Large AJP request]]></title>
+        <id>https://github.com/advisories/GHSA-95rf-557x-44g5</id>
+        <link href="https://github.com/advisories/GHSA-95rf-557x-44g5"/>
+        <updated>2022-08-18T18:49:45.000Z</updated>
+        <content type="html"><![CDATA[<p>When a POST request comes through AJP and the request exceeds the max-post-size limit (maxEntitySize), Undertow's AjpServerRequestConduit implementation closes a connection without sending any response to the client/proxy. This behavior results in that a front-end proxy marking the backend worker (application server) as an error state and not forward requests to the worker for a while. In mod_cluster, this continues until the next STATUS request (10 seconds intervals) from the application server updates the server state. So, in the worst case, it can result in "All workers are in error state" and mod_cluster responds "503 Service Unavailable" for a while (up to 10 seconds). In mod_proxy_balancer, it does not forward requests to the worker until the "retry" timeout passes. However, luckily, mod_proxy_balancer has "forcerecovery" setting (On by default; this parameter can force the immediate recovery of all workers without considering the retry parameter of the workers if all workers of a balancer are in error state.). So, unlike mod_cluster, mod_proxy_balancer does not result in responding "503 Service Unavailable". An attacker could use this behavior to send a malicious request and trigger server errors, resulting in DoS (denial of service). This flaw was fixed in Undertow 2.2.19.Final, Undertow 2.3.0.Alpha2.</p>
+<h3 id="references">References</h3>
+<ul>
+<li><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-2053">https://nvd.nist.gov/vuln/detail/CVE-2022-2053</a></li>
+<li><a href="https://bugzilla.redhat.com/show_bug.cgi?id=2095862&amp;comment#0">https://bugzilla.redhat.com/show_bug.cgi?id=2095862&amp;comment#0</a></li>
+<li><a href="https://issues.redhat.com/browse/UNDERTOW-2133">https://issues.redhat.com/browse/UNDERTOW-2133</a></li>
+<li><a href="https://github.com/undertow-io/undertow/pull/1350">https://github.com/undertow-io/undertow/pull/1350</a></li>
+<li><a href="https://github.com/advisories/GHSA-95rf-557x-44g5">https://github.com/advisories/GHSA-95rf-557x-44g5</a></li>
+</ul>
+]]></content>
+        <author>
+            <name>GitHub</name>
+            <email>GitHub@noreply.github.com</email>
+            <uri>https://github.com/advisories/GHSA-95rf-557x-44g5</uri>
+        </author>
+        <category label="HIGH" term="severity"/>
+        <published>2022-08-06T00:00:46.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[io.undertow:undertow-core] Undertow vulnerable to Dos via Large AJP request]]></title>
+        <id>https://github.com/advisories/GHSA-95rf-557x-44g5</id>
+        <link href="https://github.com/advisories/GHSA-95rf-557x-44g5"/>
+        <updated>2022-08-18T18:49:45.000Z</updated>
+        <content type="html"><![CDATA[<p>When a POST request comes through AJP and the request exceeds the max-post-size limit (maxEntitySize), Undertow's AjpServerRequestConduit implementation closes a connection without sending any response to the client/proxy. This behavior results in that a front-end proxy marking the backend worker (application server) as an error state and not forward requests to the worker for a while. In mod_cluster, this continues until the next STATUS request (10 seconds intervals) from the application server updates the server state. So, in the worst case, it can result in "All workers are in error state" and mod_cluster responds "503 Service Unavailable" for a while (up to 10 seconds). In mod_proxy_balancer, it does not forward requests to the worker until the "retry" timeout passes. However, luckily, mod_proxy_balancer has "forcerecovery" setting (On by default; this parameter can force the immediate recovery of all workers without considering the retry parameter of the workers if all workers of a balancer are in error state.). So, unlike mod_cluster, mod_proxy_balancer does not result in responding "503 Service Unavailable". An attacker could use this behavior to send a malicious request and trigger server errors, resulting in DoS (denial of service). This flaw was fixed in Undertow 2.2.19.Final, Undertow 2.3.0.Alpha2.</p>
+<h3 id="references">References</h3>
+<ul>
+<li><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-2053">https://nvd.nist.gov/vuln/detail/CVE-2022-2053</a></li>
+<li><a href="https://bugzilla.redhat.com/show_bug.cgi?id=2095862&amp;comment#0">https://bugzilla.redhat.com/show_bug.cgi?id=2095862&amp;comment#0</a></li>
+<li><a href="https://issues.redhat.com/browse/UNDERTOW-2133">https://issues.redhat.com/browse/UNDERTOW-2133</a></li>
+<li><a href="https://github.com/undertow-io/undertow/pull/1350">https://github.com/undertow-io/undertow/pull/1350</a></li>
+<li><a href="https://github.com/advisories/GHSA-95rf-557x-44g5">https://github.com/advisories/GHSA-95rf-557x-44g5</a></li>
+</ul>
+]]></content>
+        <author>
+            <name>GitHub</name>
+            <email>GitHub@noreply.github.com</email>
+            <uri>https://github.com/advisories/GHSA-95rf-557x-44g5</uri>
+        </author>
+        <category label="HIGH" term="severity"/>
+        <published>2022-08-06T00:00:46.000Z</published>
+    </entry>
     <entry>
         <title type="html"><![CDATA[[io.dataease:dataease-plugin-common] SQL Injection found in Dataease ]]></title>
         <id>https://github.com/advisories/GHSA-hmvw-66jm-h9fh</id>
@@ -447,101 +566,5 @@
         </author>
         <category label="HIGH" term="severity"/>
         <published>2022-06-24T00:00:31.000Z</published>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[[org.jenkins-ci.plugins:xunit] Protection Mechanism Failure in Jenkins xUnit Plugin]]></title>
-        <id>https://github.com/advisories/GHSA-298j-9q4w-6rm4</id>
-        <link href="https://github.com/advisories/GHSA-298j-9q4w-6rm4"/>
-        <updated>2022-08-16T03:01:01.000Z</updated>
-        <content type="html"><![CDATA[<p>Jenkins xUnit Plugin 3.0.8 and earlier implements an agent-to-controller message that creates a user-specified directory if it doesn't exist, and parsing files inside it as test results, allowing attackers able to control agent processes to create an arbitrary directory on the Jenkins controller or to obtain test results from existing files in an attacker-specified directory.</p>
-<h3 id="references">References</h3>
-<ul>
-<li><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-34181">https://nvd.nist.gov/vuln/detail/CVE-2022-34181</a></li>
-<li><a href="https://www.jenkins.io/security/advisory/2022-06-22/#SECURITY-2549">https://www.jenkins.io/security/advisory/2022-06-22/#SECURITY-2549</a></li>
-<li><a href="https://github.com/advisories/GHSA-298j-9q4w-6rm4">https://github.com/advisories/GHSA-298j-9q4w-6rm4</a></li>
-</ul>
-]]></content>
-        <author>
-            <name>GitHub</name>
-            <email>GitHub@noreply.github.com</email>
-            <uri>https://github.com/advisories/GHSA-298j-9q4w-6rm4</uri>
-        </author>
-        <category label="CRITICAL" term="severity"/>
-        <published>2022-06-24T00:00:31.000Z</published>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[[org.jenkins-ci.main:jenkins-core] Exposure of Sensitive Information to an Unauthorized Actor in Jenkins]]></title>
-        <id>https://github.com/advisories/GHSA-g78x-xmv8-23xp</id>
-        <link href="https://github.com/advisories/GHSA-g78x-xmv8-23xp"/>
-        <updated>2022-08-16T03:00:51.000Z</updated>
-        <content type="html"><![CDATA[<p>The Jenkins 2.73.1 and earlier, 2.83 and earlier remote API at /queue/item/(ID)/api showed information about tasks in the queue (typically builds waiting to start). This included information about tasks that the current user otherwise has no access to, e.g. due to lack of Item/Read permission. This has been fixed, and the API endpoint is now only available for tasks that the current user has access to.</p>
-<h3 id="references">References</h3>
-<ul>
-<li><a href="https://nvd.nist.gov/vuln/detail/CVE-2017-1000399">https://nvd.nist.gov/vuln/detail/CVE-2017-1000399</a></li>
-<li><a href="https://jenkins.io/security/advisory/2017-10-11/">https://jenkins.io/security/advisory/2017-10-11/</a></li>
-<li><a href="https://github.com/jenkinsci/jenkins/commit/3ff432ace14d8f4544c88a179a2f7a962eb98ba6">https://github.com/jenkinsci/jenkins/commit/3ff432ace14d8f4544c88a179a2f7a962eb98ba6</a></li>
-<li><a href="https://github.com/jenkinsci/jenkins/blob/6d179998e18adfbaa4e443c7e837135bf36c53d7/test/src/test/java/hudson/model/QueueTest.java">https://github.com/jenkinsci/jenkins/blob/6d179998e18adfbaa4e443c7e837135bf36c53d7/test/src/test/java/hudson/model/QueueTest.java</a></li>
-<li><a href="https://github.com/advisories/GHSA-g78x-xmv8-23xp">https://github.com/advisories/GHSA-g78x-xmv8-23xp</a></li>
-</ul>
-]]></content>
-        <author>
-            <name>GitHub</name>
-            <email>GitHub@noreply.github.com</email>
-            <uri>https://github.com/advisories/GHSA-g78x-xmv8-23xp</uri>
-        </author>
-        <category label="MODERATE" term="severity"/>
-        <published>2022-05-14T01:04:36.000Z</published>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[[org.jenkins-ci.main:jenkins-core] Improper Neutralization of Input During Web Page Generation in Jenkins]]></title>
-        <id>https://github.com/advisories/GHSA-qpg9-83fv-x9ch</id>
-        <link href="https://github.com/advisories/GHSA-qpg9-83fv-x9ch"/>
-        <updated>2022-08-16T03:00:48.000Z</updated>
-        <content type="html"><![CDATA[<p>The f:validateButton form control for the Jenkins UI did not properly escape job URLs in Jenkins 2.171 and earlier and Jenkins LTS 2.164.1 and earlier, resulting in a cross-site scripting (XSS) vulnerability exploitable by users with the ability to control job names.</p>
-<h3 id="references">References</h3>
-<ul>
-<li><a href="https://nvd.nist.gov/vuln/detail/CVE-2019-1003050">https://nvd.nist.gov/vuln/detail/CVE-2019-1003050</a></li>
-<li><a href="https://access.redhat.com/errata/RHBA-2019:1605">https://access.redhat.com/errata/RHBA-2019:1605</a></li>
-<li><a href="https://jenkins.io/security/advisory/2019-04-10/#SECURITY-1327">https://jenkins.io/security/advisory/2019-04-10/#SECURITY-1327</a></li>
-<li><a href="https://www.oracle.com/security-alerts/cpuapr2022.html">https://www.oracle.com/security-alerts/cpuapr2022.html</a></li>
-<li><a href="http://www.securityfocus.com/bid/107889">http://www.securityfocus.com/bid/107889</a></li>
-<li><a href="https://github.com/jenkinsci/jenkins/commit/8eb632dda219ec8796420ce58d9564cddf8f8f93">https://github.com/jenkinsci/jenkins/commit/8eb632dda219ec8796420ce58d9564cddf8f8f93</a></li>
-<li><a href="https://github.com/jenkinsci/jenkins/commit/d393c7e9ba3ec44953ef1f8b11839421e2649ee7">https://github.com/jenkinsci/jenkins/commit/d393c7e9ba3ec44953ef1f8b11839421e2649ee7</a></li>
-<li><a href="https://github.com/advisories/GHSA-qpg9-83fv-x9ch">https://github.com/advisories/GHSA-qpg9-83fv-x9ch</a></li>
-</ul>
-]]></content>
-        <author>
-            <name>GitHub</name>
-            <email>GitHub@noreply.github.com</email>
-            <uri>https://github.com/advisories/GHSA-qpg9-83fv-x9ch</uri>
-        </author>
-        <category label="MODERATE" term="severity"/>
-        <published>2022-05-13T01:01:01.000Z</published>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[[org.jenkins-ci.main:jenkins-core] Improper Neutralization of Input During Web Page Generation in Jenkins]]></title>
-        <id>https://github.com/advisories/GHSA-qpg9-83fv-x9ch</id>
-        <link href="https://github.com/advisories/GHSA-qpg9-83fv-x9ch"/>
-        <updated>2022-08-16T03:00:48.000Z</updated>
-        <content type="html"><![CDATA[<p>The f:validateButton form control for the Jenkins UI did not properly escape job URLs in Jenkins 2.171 and earlier and Jenkins LTS 2.164.1 and earlier, resulting in a cross-site scripting (XSS) vulnerability exploitable by users with the ability to control job names.</p>
-<h3 id="references">References</h3>
-<ul>
-<li><a href="https://nvd.nist.gov/vuln/detail/CVE-2019-1003050">https://nvd.nist.gov/vuln/detail/CVE-2019-1003050</a></li>
-<li><a href="https://access.redhat.com/errata/RHBA-2019:1605">https://access.redhat.com/errata/RHBA-2019:1605</a></li>
-<li><a href="https://jenkins.io/security/advisory/2019-04-10/#SECURITY-1327">https://jenkins.io/security/advisory/2019-04-10/#SECURITY-1327</a></li>
-<li><a href="https://www.oracle.com/security-alerts/cpuapr2022.html">https://www.oracle.com/security-alerts/cpuapr2022.html</a></li>
-<li><a href="http://www.securityfocus.com/bid/107889">http://www.securityfocus.com/bid/107889</a></li>
-<li><a href="https://github.com/jenkinsci/jenkins/commit/8eb632dda219ec8796420ce58d9564cddf8f8f93">https://github.com/jenkinsci/jenkins/commit/8eb632dda219ec8796420ce58d9564cddf8f8f93</a></li>
-<li><a href="https://github.com/jenkinsci/jenkins/commit/d393c7e9ba3ec44953ef1f8b11839421e2649ee7">https://github.com/jenkinsci/jenkins/commit/d393c7e9ba3ec44953ef1f8b11839421e2649ee7</a></li>
-<li><a href="https://github.com/advisories/GHSA-qpg9-83fv-x9ch">https://github.com/advisories/GHSA-qpg9-83fv-x9ch</a></li>
-</ul>
-]]></content>
-        <author>
-            <name>GitHub</name>
-            <email>GitHub@noreply.github.com</email>
-            <uri>https://github.com/advisories/GHSA-qpg9-83fv-x9ch</uri>
-        </author>
-        <category label="MODERATE" term="severity"/>
-        <published>2022-05-13T01:01:01.000Z</published>
     </entry>
 </feed>
