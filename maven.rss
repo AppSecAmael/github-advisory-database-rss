@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://azu.github.io/github-advisory-database-rss/maven.rss</id>
     <title>Security Advisory for Java artifacts hosted at the Maven central repository</title>
-    <updated>2022-08-18T19:09:13.721Z</updated>
+    <updated>2022-08-18T20:11:59.940Z</updated>
     <generator>github-advisory-database-rss</generator>
     <link rel="alternate" href="https://github.com/advisories?query=type%3Areviewed+ecosystem%3Amaven"/>
     <subtitle>Security Advisory for Java artifacts hosted at the Maven central repository on GitHub</subtitle>
@@ -11,6 +11,50 @@
     <category term="HIGH"/>
     <category term="MODERATE"/>
     <category term="LOW"/>
+    <entry>
+        <title type="html"><![CDATA[[org.fourthline.cling:cling-core] 4thline cling uPnP protocol issue can lead to denial of service]]></title>
+        <id>https://github.com/advisories/GHSA-c438-6f6r-pg8w</id>
+        <link href="https://github.com/advisories/GHSA-c438-6f6r-pg8w"/>
+        <updated>2022-08-18T19:18:56.000Z</updated>
+        <content type="html"><![CDATA[<p>An issue in the UPnP protocol in 4thline cling 2.0.0 through 2.1.2 allows remote attackers to cause a denial of service via an unchecked <code>CALLBACK</code> parameter in the request header. As of 2022, 4thline cling is no longer supported by the maintainers.</p>
+<h3 id="references">References</h3>
+<ul>
+<li><a href="https://nvd.nist.gov/vuln/detail/CVE-2020-23622">https://nvd.nist.gov/vuln/detail/CVE-2020-23622</a></li>
+<li><a href="https://github.com/4thline/cling/issues/253">https://github.com/4thline/cling/issues/253</a></li>
+<li><a href="https://zh-cn.tenable.com/blog/cve-2020-12695-callstranger-vulnerability-in-universal-plug-and-play-upnp-puts-billions-of?tns_redirect=true">https://zh-cn.tenable.com/blog/cve-2020-12695-callstranger-vulnerability-in-universal-plug-and-play-upnp-puts-billions-of?tns_redirect=true</a></li>
+<li><a href="https://github.com/advisories/GHSA-c438-6f6r-pg8w">https://github.com/advisories/GHSA-c438-6f6r-pg8w</a></li>
+</ul>
+]]></content>
+        <author>
+            <name>GitHub</name>
+            <email>GitHub@noreply.github.com</email>
+            <uri>https://github.com/advisories/GHSA-c438-6f6r-pg8w</uri>
+        </author>
+        <category label="HIGH" term="severity"/>
+        <published>2022-08-16T00:00:22.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[com.google.android.gms:play-services-basement] Google Play Services SDK leads to apps having incorrectly set mutability flag]]></title>
+        <id>https://github.com/advisories/GHSA-cm6r-892j-jv2g</id>
+        <link href="https://github.com/advisories/GHSA-cm6r-892j-jv2g"/>
+        <updated>2022-08-18T19:13:35.000Z</updated>
+        <content type="html"><![CDATA[<p>Apps developed with Google Play Services SDK incorrectly had the mutability flag set to PendingIntents that were passed to the Notification service. As Google Play services SDK is so widely used, this bug affects many applications. For an application affected, this bug will let the attacker, gain the access to all non-exported providers and/or gain the access to other providers the victim has permissions. We recommend upgrading to version 18.0.2 of the Play Service SDK as well as rebuilding and redeploying apps.</p>
+<h3 id="references">References</h3>
+<ul>
+<li><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-2390">https://nvd.nist.gov/vuln/detail/CVE-2022-2390</a></li>
+<li><a href="https://developers.google.com/android/guides/releases#may_03_2022">https://developers.google.com/android/guides/releases#may_03_2022</a></li>
+<li><a href="https://mvnrepository.com/artifact/com.google.android.gms/play-services-basement/18.0.2">https://mvnrepository.com/artifact/com.google.android.gms/play-services-basement/18.0.2</a></li>
+<li><a href="https://github.com/advisories/GHSA-cm6r-892j-jv2g">https://github.com/advisories/GHSA-cm6r-892j-jv2g</a></li>
+</ul>
+]]></content>
+        <author>
+            <name>GitHub</name>
+            <email>GitHub@noreply.github.com</email>
+            <uri>https://github.com/advisories/GHSA-cm6r-892j-jv2g</uri>
+        </author>
+        <category label="MODERATE" term="severity"/>
+        <published>2022-08-13T00:00:43.000Z</published>
+    </entry>
     <entry>
         <title type="html"><![CDATA[[com.github.jlangch:venice] Venice vulnerable to Partial Path Traversal issue within the functions `load-file` and `load-resource`]]></title>
         <id>https://github.com/advisories/GHSA-4mmh-5vw7-rgvj</id>
@@ -524,47 +568,5 @@ The latter call suffers from the <em>Partial Path Traversal</em> vulnerability.<
         </author>
         <category label="MODERATE" term="severity"/>
         <published>2022-05-13T01:05:56.000Z</published>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[[org.jenkins-ci.plugins:embeddable-build-status] Path Traversal in Jenkins Embeddable Build Status Plugin]]></title>
-        <id>https://github.com/advisories/GHSA-93mx-2vf9-28c4</id>
-        <link href="https://github.com/advisories/GHSA-93mx-2vf9-28c4"/>
-        <updated>2022-08-16T03:01:02.000Z</updated>
-        <content type="html"><![CDATA[<p>Jenkins Embeddable Build Status Plugin 2.0.3 and earlier allows specifying a <code>style</code> query parameter that is used to choose a different SVG image style without restricting possible values, resulting in a relative path traversal vulnerability that allows attackers without Overall/Read permission to specify paths to other SVG images on the Jenkins controller file system.</p>
-<h3 id="references">References</h3>
-<ul>
-<li><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-34179">https://nvd.nist.gov/vuln/detail/CVE-2022-34179</a></li>
-<li><a href="https://www.jenkins.io/security/advisory/2022-06-22/#SECURITY-2792">https://www.jenkins.io/security/advisory/2022-06-22/#SECURITY-2792</a></li>
-<li><a href="https://github.com/advisories/GHSA-93mx-2vf9-28c4">https://github.com/advisories/GHSA-93mx-2vf9-28c4</a></li>
-</ul>
-]]></content>
-        <author>
-            <name>GitHub</name>
-            <email>GitHub@noreply.github.com</email>
-            <uri>https://github.com/advisories/GHSA-93mx-2vf9-28c4</uri>
-        </author>
-        <category label="HIGH" term="severity"/>
-        <published>2022-06-24T00:00:31.000Z</published>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[[com.geteasyqa:easyqa] Cross-Site Request Forgery in Jenkins EasyQA Plugin]]></title>
-        <id>https://github.com/advisories/GHSA-g67p-jvvc-qf54</id>
-        <link href="https://github.com/advisories/GHSA-g67p-jvvc-qf54"/>
-        <updated>2022-08-16T03:01:01.000Z</updated>
-        <content type="html"><![CDATA[<p>A cross-site request forgery (CSRF) vulnerability in Jenkins EasyQA Plugin 1.0 and earlier allows attackers to connect to an attacker-specified HTTP server.</p>
-<h3 id="references">References</h3>
-<ul>
-<li><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-34203">https://nvd.nist.gov/vuln/detail/CVE-2022-34203</a></li>
-<li><a href="https://www.jenkins.io/security/advisory/2022-06-22/#SECURITY-2281">https://www.jenkins.io/security/advisory/2022-06-22/#SECURITY-2281</a></li>
-<li><a href="https://github.com/advisories/GHSA-g67p-jvvc-qf54">https://github.com/advisories/GHSA-g67p-jvvc-qf54</a></li>
-</ul>
-]]></content>
-        <author>
-            <name>GitHub</name>
-            <email>GitHub@noreply.github.com</email>
-            <uri>https://github.com/advisories/GHSA-g67p-jvvc-qf54</uri>
-        </author>
-        <category label="HIGH" term="severity"/>
-        <published>2022-06-24T00:00:31.000Z</published>
     </entry>
 </feed>

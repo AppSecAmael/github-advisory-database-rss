@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://azu.github.io/github-advisory-database-rss/npm.rss</id>
     <title>Security Advisory for JavaScript packages hosted at npmjs.com</title>
-    <updated>2022-08-18T19:09:14.270Z</updated>
+    <updated>2022-08-18T20:12:00.409Z</updated>
     <generator>github-advisory-database-rss</generator>
     <link rel="alternate" href="https://github.com/advisories?query=type%3Areviewed+ecosystem%3Anpm"/>
     <subtitle>Security Advisory for JavaScript packages hosted at npmjs.com on GitHub</subtitle>
@@ -11,6 +11,58 @@
     <category term="HIGH"/>
     <category term="MODERATE"/>
     <category term="LOW"/>
+    <entry>
+        <title type="html"><![CDATA[[react-editable-json-tree] React Editable Json Tree vulnerable to arbitrary code execution via function parsing]]></title>
+        <id>https://github.com/advisories/GHSA-j3rv-w43q-f9x2</id>
+        <link href="https://github.com/advisories/GHSA-j3rv-w43q-f9x2"/>
+        <updated>2022-08-18T19:15:30.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="impact">Impact</h3>
+<p>Our library allows strings to be parsed as functions and stored as a specialized component, <a href="https://github.com/oxyno-zeta/react-editable-json-tree/blob/09a0ca97835b0834ad054563e2fddc6f22bc5d8c/src/components/JsonFunctionValue.js"><code>JsonFunctionValue</code></a>. To do this, Javascript's <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval"><code>eval</code></a> function was used to execute strings that begin with "function" as Javascript. This was an oversight that unfortunately allows arbitrary code to be executed if it exists as a value within the JSON structure being displayed. Given that this component may often be used to display data from arbitrary, untrusted sources, this is extremely dangerous.</p>
+<p>One important note is that users who have defined a custom <a href="https://github.com/oxyno-zeta/react-editable-json-tree/tree/09a0ca97835b0834ad054563e2fddc6f22bc5d8c#onsubmitvalueparser"><code>onSubmitValueParser</code></a> callback prop on the <a href="https://github.com/oxyno-zeta/react-editable-json-tree/blob/09a0ca97835b0834ad054563e2fddc6f22bc5d8c/src/JsonTree.js"><code>JsonTree</code></a> component should be <em><strong>unaffected</strong></em>. This vulnerability exists in the default <code>onSubmitValueParser</code> prop which calls <a href="https://github.com/oxyno-zeta/react-editable-json-tree/blob/master/src/utils/parse.js#L30"><code>parse</code></a>.</p>
+<h3 id="patches">Patches</h3>
+<p>We have decided on a two-pronged approach to patching this vulnerability:</p>
+<ol>
+<li>Create a patch update that adds a workaround <strong>which is not enabled by default</strong> to preserve backwards-compatibility</li>
+<li>On the next major update, <strong>we will enable this workaround by default</strong></li>
+</ol>
+<p>The workaround we have decided on is adding a prop to <code>JsonTree</code> called <code>allowFunctionEvaluation</code>. This prop will be set to <code>true</code> in v2.2.2, so you can upgrade without fear of losing backwards-compatibility.</p>
+<p>We have also implemented additional security measures as we know many people may not read the details of this vulnerability, and we want to do the best we can to keep you protected. In v2.2.2, we switched from using <code>eval</code> to using <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function"><code>Function</code></a> to construct anonymous functions. This is better than <code>eval</code> for the following reasons:</p>
+<ul>
+<li>Arbitrary code should not be able to execute immediately, since the <code>Function</code> constructor explicitly <em>only creates</em> anonymous functions</li>
+<li>Functions are created without local closures, so they only have access to the global scope</li>
+</ul>
+<p>This change has brought a <em>slight</em> potential for breaking backwards-compatibility if users for some reason were relying on side-effects of our usage of <code>eval</code>, but that is beyond intended behavior, so we have decided to go ahead with this change and consider it a non-breaking change.</p>
+<h3 id="workarounds">Workarounds</h3>
+<p>As mentioned above, there are a few scenarios you must consider:</p>
+<p>If you use:</p>
+<ul>
+<li><strong>Version <code>&lt;2.2.2</code></strong>, you must upgrade as soon as possible.</li>
+<li><strong>Version <code>^2.2.2</code></strong>, you must explicitly set <code>JsonTree</code>'s <code>allowFunctionEvaluation</code> prop to <code>false</code> to fully mitigate this vulnerability.</li>
+<li><strong>Version <code>&gt;=3.0.0</code></strong>, <code>allowFunctionEvaluation</code> is already set to <code>false</code> by default, so no further steps are necessary.</li>
+</ul>
+<h3 id="references">References</h3>
+<p>None.</p>
+<h3 id="for-more-information">For more information</h3>
+<p>If you have any questions or comments about this advisory:</p>
+<ul>
+<li>Open an issue in the <a href="https://github.com/oxyno-zeta/react-editable-json-tree">GitHub repo</a></li>
+</ul>
+<h3 id="references-1">References</h3>
+<ul>
+<li><a href="https://github.com/oxyno-zeta/react-editable-json-tree/security/advisories/GHSA-j3rv-w43q-f9x2">https://github.com/oxyno-zeta/react-editable-json-tree/security/advisories/GHSA-j3rv-w43q-f9x2</a></li>
+<li><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-36010">https://nvd.nist.gov/vuln/detail/CVE-2022-36010</a></li>
+<li><a href="https://github.com/oxyno-zeta/react-editable-json-tree/releases/tag/2.2.2">https://github.com/oxyno-zeta/react-editable-json-tree/releases/tag/2.2.2</a></li>
+<li><a href="https://github.com/advisories/GHSA-j3rv-w43q-f9x2">https://github.com/advisories/GHSA-j3rv-w43q-f9x2</a></li>
+</ul>
+]]></content>
+        <author>
+            <name>GitHub</name>
+            <email>GitHub@noreply.github.com</email>
+            <uri>https://github.com/advisories/GHSA-j3rv-w43q-f9x2</uri>
+        </author>
+        <category label="CRITICAL" term="severity"/>
+        <published>2022-08-18T19:15:28.000Z</published>
+    </entry>
     <entry>
         <title type="html"><![CDATA[[raneto] Raneto vulnerable to Cross-site Scripting prior to v0.17.1]]></title>
         <id>https://github.com/advisories/GHSA-vc68-6x72-w22f</id>
@@ -618,26 +670,5 @@ new ApolloServer({
         </author>
         <category label="MODERATE" term="severity"/>
         <published>2020-07-31T16:18:53.000Z</published>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[[eslint] Regular Expression Denial of Service]]></title>
-        <id>https://github.com/advisories/GHSA-jcgq-xh2f-2hfm</id>
-        <link href="https://github.com/advisories/GHSA-jcgq-xh2f-2hfm"/>
-        <updated>2022-08-13T03:05:10.000Z</updated>
-        <content type="html"><![CDATA[<p>A vulnerability was descovered in eslint before 4.18.2. One of the regexes in eslint is vulnerable to catastrophic backtracking.</p>
-<h3 id="references">References</h3>
-<ul>
-<li><a href="https://github.com/eslint/eslint/issues/10002">https://github.com/eslint/eslint/issues/10002</a></li>
-<li><a href="https://github.com/eslint/eslint/commit/f6901d0bcf6c918ac4e5c6c7c4bddeb2cb715c09">https://github.com/eslint/eslint/commit/f6901d0bcf6c918ac4e5c6c7c4bddeb2cb715c09</a></li>
-<li><a href="https://github.com/advisories/GHSA-jcgq-xh2f-2hfm">https://github.com/advisories/GHSA-jcgq-xh2f-2hfm</a></li>
-</ul>
-]]></content>
-        <author>
-            <name>GitHub</name>
-            <email>GitHub@noreply.github.com</email>
-            <uri>https://github.com/advisories/GHSA-jcgq-xh2f-2hfm</uri>
-        </author>
-        <category label="MODERATE" term="severity"/>
-        <published>2021-02-25T01:20:42.000Z</published>
     </entry>
 </feed>
